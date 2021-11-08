@@ -15,6 +15,12 @@ Once dependancies are installed, run
 Runs on port :3000 (http://localhost:3000)
 
 TODO:
+- Update parameters when query changes
+
+
+
+
+ENHANCEMENTS:
 - Allow searching based on genre or different criteria 
 - Make use of lazy loading 
 - Random movie finder 

@@ -1,11 +1,5 @@
 import React, { FormEvent, MouseEvent, useState } from 'react';
 import { History, LocationState } from "history";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
 
 interface IProps {
   history: History

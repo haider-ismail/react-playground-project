@@ -1,6 +1,8 @@
 import { observable, action, computed } from 'mobx';
+import forEach from 'lodash/forEach';
 import get from 'lodash/get';
 import axios from 'axios';
+import queryString from 'query-string';
 
 import {
   IMovie
@@ -29,13 +31,17 @@ export default class ResultsStore {
 
   @action
   setKeyword = async (input: string) => {
-    this.keyword = input;
+    this.keyword = input
+
+    this.setParams(true)
+  };
+
+  @action
+  setParams = async (search: boolean = false) => {
+
     this.resetResults()
 
-    if(this.keyword !== '') {
-      await this.fetchResults();
-      return
-    }
+    if(search) await this.fetchResults();
   };
 
   @action
@@ -118,5 +124,28 @@ export default class ResultsStore {
     }
   };
 
-  
+  /**
+   * Gets search terms from url query. Runs on component mount and update
+  */
+  @action
+  getSearchTerms = () => {
+    const searchTerms = queryString.parse(window.location.search)
+      
+    this.setSearchTerms(searchTerms);
+  }
+
+  /**
+   * Updates the store with the pased in query params 
+   * @param searchTerms 
+  */
+  @action
+  setSearchTerms = async (searchTerms: { [key: string]: any }) => {
+    forEach(searchTerms, (key, value) => {
+      if (value === 'q') {
+        this.keyword = key;
+      }
+    })
+
+    this.setParams(true)
+  }  
 }
