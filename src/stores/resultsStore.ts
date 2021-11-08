@@ -29,6 +29,10 @@ export default class ResultsStore {
     return  Math.ceil(Math.abs(this.totalPages as any))
   }
 
+  /**
+   * This is called when keyword is entered into the header search-box
+   * @param input 
+   */
   @action
   setKeyword = async (input: string) => {
     this.keyword = input
@@ -84,7 +88,7 @@ export default class ResultsStore {
   fetchResults = async () => {
     this.loading = true;
     try {
-      const response = await axios.get(`http://www.omdbapi.com/?apikey=6f575f76&s=${this.keyword}`);
+      const response = await axios.get(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=${this.keyword}`);
       
       if(get(response, 'data.Search')) {
         this.results = get(response, 'data.Search', []);
