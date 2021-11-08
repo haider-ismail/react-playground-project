@@ -1,0 +1,27 @@
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #292929;
+  overflow: auto;
+  outline: none;
+  box-sizing: border-box;
+  color: #292929;
+  max-height: calc(100vh - 5%);
+}
+
+.ReactModal__Overlay {
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.modal__close {
+  color: #fff;
+  cursor: pointer;
+  text-align: right;
+
+  svg {
+    vertical-align: middle;
+  }
+}
