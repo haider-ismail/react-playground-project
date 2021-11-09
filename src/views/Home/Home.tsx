@@ -1,5 +1,5 @@
-import React, { FormEvent, MouseEvent, useState } from 'react';
-import { History, LocationState } from "history";
+import React, { FormEvent, useState } from 'react';
+import { History } from "history";
 
 interface IProps {
   history: History

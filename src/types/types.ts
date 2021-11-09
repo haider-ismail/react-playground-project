@@ -9,3 +9,7 @@ export interface IMovie {
   Genre: string;
   Plot: string;
 }
+
+export interface IQueryParams {
+  keyword?: string;
+}

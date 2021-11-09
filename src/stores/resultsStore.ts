@@ -4,8 +4,10 @@ import get from 'lodash/get';
 import axios from 'axios';
 import queryString from 'query-string';
 
+// types
 import {
-  IMovie
+  IMovie,
+  IQueryParams
 } from '../types/types';
 
 export default class ResultsStore {
@@ -18,6 +20,7 @@ export default class ResultsStore {
   @observable perPage: Number = 9;
   @observable currentPageIndex: Number = 0;
   @observable totalPages: Number = 0;
+  @observable queryParams: IQueryParams = {}
 
   @computed
   get getCurrentPage() {
@@ -42,11 +45,32 @@ export default class ResultsStore {
 
   @action
   setParams = async (search: boolean = false) => {
+    let params: any = {}
+
+    if (this.keyword) {
+      params.keyword = this.keyword
+    }
+
+    this.queryParams = params
 
     this.resetResults()
 
-    if(search) await this.fetchResults();
+    if(search) await this.fetchResults()
   };
+
+  @action
+  getQueryParamsString = () => {
+    let params: any = this.queryParams
+    let queryString = null
+
+    let queryParams = Object.keys(params)
+    .map((key) => { 
+      return (params[key] ? `${key}=${params[key]}` : null ) 
+    })
+
+    queryString = `${queryParams.filter(filter => filter !== null).join('&')}`;
+    return queryString
+  }
 
   @action
   incrementPage = async () => {

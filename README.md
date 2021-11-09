@@ -15,7 +15,7 @@ Once dependancies are installed, run
 Runs on port :3000 (http://localhost:3000)
 
 TODO:
-- Update parameters when query changes
+
 
 
 

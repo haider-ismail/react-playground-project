@@ -11,20 +11,20 @@ interface IProps {
 }
 
 class Results extends Component<IProps> {
-
-  constructor(props: IProps) {
-    super(props);
-    const { uiStore, resultsStore } = this.props;
-  }
-
   componentDidMount() {
-    const { uiStore, resultsStore } = this.props;
+    const { resultsStore } = this.props;
 
     resultsStore.getSearchTerms();
   }
+
+  // componentDidUpdate() {
+  //   const { resultsStore } = this.props;
+
+  //   resultsStore.getSearchTerms();
+  // }
   
   openModal = () => {
-    const { uiStore, resultsStore } = this.props;
+    const { uiStore } = this.props;
 
     if(uiStore) uiStore.toggleModal()
     if(uiStore) console.log('uiStore.resultModalOpen', uiStore.resultModalOpen);
