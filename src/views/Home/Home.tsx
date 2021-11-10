@@ -13,7 +13,7 @@ const Home: React.FC<IProps> = ({ history }) => {
 
     history.push({
       pathname: '/results',
-      search: `?q=${searchTerm}`
+      search: `?keyword=${searchTerm}`
     })
   }
 

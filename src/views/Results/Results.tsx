@@ -12,16 +12,16 @@ interface IProps {
 
 class Results extends Component<IProps> {
   componentDidMount() {
-    const { resultsStore } = this.props;
+    console.log('componentDidMount');
+    
+    const { resultsStore } = this.props
 
-    resultsStore.getSearchTerms();
+    resultsStore.getSearchTerms()
   }
 
-  // componentDidUpdate() {
-  //   const { resultsStore } = this.props;
-
-  //   resultsStore.getSearchTerms();
-  // }
+  componentDidUpdate() {
+    console.log('componentDidUpdate');
+  }
   
   openModal = () => {
     const { uiStore } = this.props;
@@ -74,8 +74,9 @@ class Results extends Component<IProps> {
           ) : (
             results.length ? (
               <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md">
+                 <h2 className="text-3xl text-white">Search results</h2>
                 <div className="results-listing__header flex flex-wrap justify-between items-center text-white font-bold">
-                  <div className="w-full sm:w-auto mb-6 sm:mb-0" >{results.length} Results found</div>
+                  <div className="w-full sm:w-auto mb-6 sm:mb-0" >{results.length} Results found for "{resultsStore.keyword}"</div>
   
                   <div className="flex items-center">
                     <span className="text-lg">Page {resultsStore.getCurrentPage} of {resultsStore.getTotalPages}</span>
@@ -87,18 +88,29 @@ class Results extends Component<IProps> {
                   </div>
                 </div>
   
-                <div className="results-listing py-8 grid gap-5 grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
+                <div className="results-listing py-8 grid gap-5 grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2" id="resultsListing" aria-live="polite">
                   {resultsStore.getPaginatedResults() && resultsStore.getPaginatedResults().map((item: any) => <SearchResultCard clickHandler={() => this.openModal()} item={item} key={item.imdbID} />) }
                 </div>
               </div>
   
             ) : (
-              <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
-                
-                {searched && <h3 className="text-2xl mb-4">No results found.</h3>}
-                {searched && errorMessage && <p className="text-lg">{errorMessage}</p> }
-                {!searched && <h3 className="text-3xl mb-6">Welcome to MMTFlix</h3>}
-                {!searched && <p className="text-lg">Search for a movie or TV show using the filter above.</p>}
+
+              <div>
+                { searched && resultsStore.keyword && !resultsStore.results.length && <div className="results-listing__container bg-gray-800 px-6 py-8 mb-8 rounded-md text-white text-center">
+                  {searched && <h3 className="text-2xl mb-4">No results matching "{resultsStore.keyword}" found</h3>}
+                  {searched && errorMessage && <p className="text-lg">{errorMessage}</p> }
+                </div> }
+               
+
+                <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
+                  <div className="results-listing__header flex flex-wrap justify-between items-center text-white font-bold">
+                    <h2 className="text-3xl">Recommended</h2>
+                  </div>
+
+                  <div className="results-listing py-8 grid gap-5 grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2" aria-live="polite">
+                    {resultsStore.recommendedListing && resultsStore.recommendedListing.map((item: any) => <SearchResultCard clickHandler={() => this.openModal()} item={item} key={item.imdbID} />) }
+                  </div>
+                </div>
               </div>
             )
           )}
