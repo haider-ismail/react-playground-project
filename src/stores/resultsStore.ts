@@ -15,14 +15,14 @@ export default class ResultsStore {
   @observable keyword: string = '';
   @observable results: IMovie[] = [];
   @observable recommendedListing: IMovie[] = [];
-  selectedItem: IMovie | null = null;
+  @observable selectedItem: IMovie | null = null;
   @observable loading: boolean = false;
-  searched: boolean = false;
-  errorMessage: string | null = null;
-  perPage: Number = 9;
-  currentPageIndex: Number = 0;
-  totalPages: Number = 0;
-  queryParams: IQueryParams = {}
+  @observable searched: boolean = false;
+  @observable errorMessage: string | null = null;
+  @observable perPage: Number = 9;
+  @observable currentPageIndex: Number = 0;
+  @observable totalPages: Number = 0;
+  @observable queryParams: IQueryParams = {}
 
   @computed
   get getCurrentPage() {
@@ -48,6 +48,9 @@ export default class ResultsStore {
   setParams = async (search: boolean = false) => {
     let params: any = {}
 
+    console.log('[setParams] --> search:', search, ', keywrod:', this.keyword);
+    
+
     if (this.keyword) {
       params.keyword = this.keyword
     }
@@ -58,7 +61,10 @@ export default class ResultsStore {
     this.queryParams = params
     
     if (search && !_isEmpty(params)) await this.fetchResults()
-    if (_isEmpty(params)) await this.fetchRecommended()
+    if (_isEmpty(params)) {
+      this.resetResults()
+      await this.fetchRecommended()
+    } 
   }
 
   @action
@@ -71,6 +77,9 @@ export default class ResultsStore {
     })
 
     queryString = `${queryParams.filter(filter => filter !== null).join('&')}`
+
+    console.log('[getQueryParamsString] --> queryString: ', queryString);
+    
 
     return queryString
   }
@@ -115,6 +124,8 @@ export default class ResultsStore {
   fetchResults = async () => {
     this.resetResults()
 
+    console.log('[fetchResults] -->')
+
     this.loading = true;
     try {
       const response = await axios.get(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=${this.keyword}`);
@@ -124,7 +135,7 @@ export default class ResultsStore {
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         this.totalPages = Math.abs(<any>this.results.length / <any>this.perPage)
       } else {
-        if(_get(response, 'data.Error')) this.errorMessage = _get(response, 'data.Error')
+        if (_get(response, 'data.Error')) this.errorMessage = _get(response, 'data.Error')
         this.results = []
       }
 

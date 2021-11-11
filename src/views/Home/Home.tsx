@@ -20,11 +20,11 @@ const Home: React.FC<IProps> = ({ history }) => {
   return (
     <main className="home">
       <section className="container mx-auto">
-        <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
+        <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center md:max-w-screen-md mx-auto">
           <h3 className="text-3xl mb-6">Search for movies and TV shows</h3>
 
-          <form onSubmit={handleFormSubmit}>
-            <input onChange={ (e) => setSearchTerm(e.target.value) } className="border-white border-2 p-4" type="search"  />
+          <form className="flex justify-center" onSubmit={handleFormSubmit}>
+            <input onChange={ (e) => setSearchTerm(e.target.value) } className="md:w-80 border-white border-2 p-4" type="search" placeholder="Enter keywords or IMDB ID's"  />
 
             <button type="submit" className="bg-white p-4 text-black">Search</button>
           </form>      

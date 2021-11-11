@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from "react-router-dom";
 import { inject, observer } from 'mobx-react';
 import ResultsStore from '../../stores/resultsStore';
@@ -14,12 +14,22 @@ interface IProps {
 }
 
 const Header: React.FC<IProps> = ({ resultsStore }) => { 
-  const [keyword, setKeyword] = useState<string|undefined>(resultsStore?.keyword)
+  const [keyword, setKeyword] = useState<string>('')
+  const firstUpdate = useRef(true);
 
   // Utilising useEffect hook and timeout to only trigger search when user stops typing
   useEffect(() => {
+    console.log('[useEffect] -->')
+    
     const typingTimeoutId = setTimeout(() => {
-      if (resultsStore && keyword) {
+      if (resultsStore) {
+        // TODO: If keyword is empty on intiial render, do not update store, but we still want it to update store keyword if keyword is empty on subsequent query searches
+
+        if (firstUpdate.current) {
+          firstUpdate.current = false;
+          return
+        }
+
         resultsStore.setKeyword(keyword)
 
         history.push({
@@ -29,7 +39,7 @@ const Header: React.FC<IProps> = ({ resultsStore }) => {
       }
     }, 500)
     return () => clearTimeout(typingTimeoutId)
-  }, [keyword, resultsStore])
+  }, [keyword])
   
   return (
     <header className="py-8 md:pt-16 md:pb-10">

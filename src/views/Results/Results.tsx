@@ -44,7 +44,7 @@ class Results extends Component<IProps> {
 
   render() {
     const { resultsStore } = this.props;
-    const { results, loading, errorMessage, searched, selectedItem } = resultsStore
+    const { keyword, results, loading, errorMessage, searched, selectedItem } = resultsStore
   
     return (
       <main className="home">
@@ -89,28 +89,28 @@ class Results extends Component<IProps> {
                 </div>
   
                 <div className="results-listing py-8 grid gap-5 grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2" id="resultsListing" aria-live="polite">
-                  {resultsStore.getPaginatedResults() && resultsStore.getPaginatedResults().map((item: any) => <SearchResultCard clickHandler={() => this.openModal()} item={item} key={item.imdbID} />) }
+                  {resultsStore.getPaginatedResults() && resultsStore.getPaginatedResults().map((item: any) => <SearchResultCard clickHandler={() => this.openModal()} item={item} key={`${item.imdbID}_${item.Year}`} />) }
                 </div>
               </div>
   
             ) : (
 
               <div>
-                { searched && resultsStore.keyword && !resultsStore.results.length && <div className="results-listing__container bg-gray-800 px-6 py-8 mb-8 rounded-md text-white text-center">
-                  {searched && <h3 className="text-2xl mb-4">No results matching "{resultsStore.keyword}" found</h3>}
-                  {searched && errorMessage && <p className="text-lg">{errorMessage}</p> }
+                { keyword && (results && results.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 mb-8 rounded-md text-white text-center">
+                  <h3 className="text-2xl mb-4">No results matching "{resultsStore.keyword}" found</h3>
+                  { errorMessage && <p className="text-lg">{errorMessage}</p> }
                 </div> }
                
 
-                <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
+                { !keyword && (results && results.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
                   <div className="results-listing__header flex flex-wrap justify-between items-center text-white font-bold">
                     <h2 className="text-3xl">Recommended</h2>
                   </div>
 
                   <div className="results-listing py-8 grid gap-5 grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2" aria-live="polite">
-                    {resultsStore.recommendedListing && resultsStore.recommendedListing.map((item: any) => <SearchResultCard clickHandler={() => this.openModal()} item={item} key={item.imdbID} />) }
+                    {resultsStore.recommendedListing && resultsStore.recommendedListing.map((item: any) => <SearchResultCard clickHandler={() => this.openModal()} item={item} key={`${item.imdbID}_${item.Year}`} />) }
                   </div>
-                </div>
+                </div> }
               </div>
             )
           )}
