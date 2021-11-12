@@ -23,7 +23,7 @@ const SearchResultCard: React.FC<IProps> = ({ item, clickHandler, resultsStore }
 
   return (
   <article className="cursor-pointer" role="button" tabIndex={0} onClick={handeClick} onKeyPress={handleKeyPress}>
-      {(item.Poster ? <img className="w-full" src={item.Poster} alt={`${item.Title} poster`} /> : <img className="w-full" src="https://via.placeholder.com/250x400" alt="" />) }
+      {(item.Poster && item.Poster !== 'N/A' ? <img className="w-full" src={item.Poster} alt={`${item.Title} poster`} /> : <div className="w-full h-full bg-white"></div>) }
       <h3 className="text-white  mt-2 ">{item.Title}</h3>
       <time className="text-white" dateTime={item.Year}>{item.Year}</time>
   </article>

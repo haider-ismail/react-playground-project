@@ -14,23 +14,20 @@ interface IProps {
 }
 
 const Header: React.FC<IProps> = ({ resultsStore }) => { 
-  const [keyword, setKeyword] = useState<string>('')
+  const [keyword, setKeyword] = useState<string|null>(null)
   const firstUpdate = useRef(true);
 
   // Utilising useEffect hook and timeout to only trigger search when user stops typing
   useEffect(() => {
-    console.log('[useEffect] -->')
-    
     const typingTimeoutId = setTimeout(() => {
       if (resultsStore) {
-        // TODO: If keyword is empty on intiial render, do not update store, but we still want it to update store keyword if keyword is empty on subsequent query searches
-
+        // Skip for first render 
         if (firstUpdate.current) {
           firstUpdate.current = false;
           return
         }
 
-        resultsStore.setKeyword(keyword)
+        resultsStore.setKeyword(keyword as string)
 
         history.push({
           pathname: '/results',
@@ -57,7 +54,7 @@ const Header: React.FC<IProps> = ({ resultsStore }) => {
                       setKeyword(e.target.value)
                     }}
                     id="keyword"
-                    value={keyword} 
+                    value={(keyword !== null ? keyword : resultsStore?.keyword)} 
                     placeholder="Type to search..." 
                     aria-controls="resultsListing"
                   />

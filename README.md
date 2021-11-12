@@ -29,3 +29,13 @@ ENHANCEMENTS:
 - Allow the layout to change from grid view to row view 
 - Optimise for ultimate performance 
 - Anything else that you can think of!
+
+
+## Examples of ReactJs features used in components:
+
+Portals
+-  `<Modal />` [Go to file](./src/components/Modal/Modal.tsx)
+
+
+useEffect hook
+- `<Header />` [Go to file](./src/components/Header/Header.tsx)
