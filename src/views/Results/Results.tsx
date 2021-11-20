@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import SearchResultCard from '../../components/SearchResultCard';
+import React, { Component, Suspense } from 'react';
+import SearchListingHeader from '../../components/Search/SearchListingHeader';
+import SearchListing from '../../components/Search/SearchListing';
 import Modal from '../../components/Modal';
 import { inject, observer } from 'mobx-react';
 import ResultStore from '../../stores/resultsStore';
@@ -27,24 +28,11 @@ class Results extends Component<IProps> {
     const { uiStore } = this.props;
 
     if(uiStore) uiStore.toggleModal()
-    if(uiStore) console.log('uiStore.resultModalOpen', uiStore.resultModalOpen);
-  }
-
-  showNextPage = () => {
-    const { resultsStore } = this.props;
-
-    resultsStore.incrementPage()
-  }
-
-  showPreviousPage = () => {
-    const { resultsStore } = this.props;
-
-    resultsStore.decrementPage()
   }
 
   render() {
     const { resultsStore } = this.props;
-    const { keyword, results, loading, errorMessage, searched, selectedItem } = resultsStore
+    const { keyword, results, loading, errorMessage, selectedItem } = resultsStore
   
     return (
       <main className="home">
@@ -67,53 +55,40 @@ class Results extends Component<IProps> {
         </Modal>}
   
         <section className="container mx-auto">
-        {loading ? (
-          <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
-            <h2 className="text-white text-2xl mb-4">Loading results</h2>
-          </div>
-          ) : (
-            results.length ? (
-              <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md">
-                 <h2 className="text-3xl text-white">Search results</h2>
-                <div className="results-listing__header flex flex-wrap justify-between items-center text-white font-bold">
-                  <div className="w-full sm:w-auto mb-6 sm:mb-0" >{results.length} Results found for "{resultsStore.keyword}"</div>
+          {/* <Suspense fallback={
+            <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
+              <h2 className="text-white text-2xl mb-4">Loading results</h2>
+            </div>
+          }> */}
+            {
+              !loading && results.length ? (
+                <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md">
+                  <SearchListingHeader />
+                  <SearchListing  clickHandler={() => this.openModal()} />
+                </div>
+    
+              ) : (
   
-                  <div className="flex items-center">
-                    <span className="text-lg">Page {resultsStore.getCurrentPage} of {resultsStore.getTotalPages}</span>
+                <div>
+                  {/* { keyword && (results && results.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 mb-8 rounded-md text-white text-center">
+                    <h3 className="text-2xl mb-4">No results matching "{resultsStore.keyword}" found</h3>
+                    { errorMessage && <p className="text-lg">{errorMessage}</p> }
+                  </div> }
+                 
   
-                    <div className="flex -mx-3 pl-6">
-                      <button onClick={() => this.showPreviousPage()} disabled={resultsStore.getCurrentPage === 1} className="py-2 p-3 border-2 border-white mx-3"><svg width="15" height="22" viewBox="0 0 15 22" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M-1.31174e-07 11L11.25 20.5263L11.25 1.47372L-1.31174e-07 11Z" fill="#fff"/> </svg> </button>
-                      <button onClick={() => this.showNextPage()} disabled={resultsStore.getCurrentPage + 1 > resultsStore.getTotalPages} className="py-2 p-3 border-2 border-white mx-3"><svg width="15" height="22" viewBox="0 0 15 22" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M15 11L3.75 20.5263L3.75 1.47372L15 11Z" fill="#fff"/> </svg> </button>
+                  { !keyword && (results && results.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
+                    <div className="results-listing__header flex flex-wrap justify-between items-center text-white font-bold">
+                      <h2 className="text-3xl">Recommended</h2>
                     </div>
-                  </div>
-                </div>
   
-                <div className="results-listing py-8 grid gap-5 grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2" id="resultsListing" aria-live="polite">
-                  {resultsStore.getPaginatedResults() && resultsStore.getPaginatedResults().map((item: any) => <SearchResultCard clickHandler={() => this.openModal()} item={item} key={`${item.imdbID}_${item.Year}`} />) }
+                    <div className="results-listing py-8 grid gap-5 grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2" aria-live="polite">
+                      {resultsStore.recommendedListing && resultsStore.recommendedListing.map((item: any) => <SearchResultCard clickHandler={() => this.openModal()} item={item} key={`${item.imdbID}_${item.Year}`} />) }
+                    </div>
+                  </div> } */}
                 </div>
-              </div>
-  
-            ) : (
-
-              <div>
-                { keyword && (results && results.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 mb-8 rounded-md text-white text-center">
-                  <h3 className="text-2xl mb-4">No results matching "{resultsStore.keyword}" found</h3>
-                  { errorMessage && <p className="text-lg">{errorMessage}</p> }
-                </div> }
-               
-
-                { !keyword && (results && results.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
-                  <div className="results-listing__header flex flex-wrap justify-between items-center text-white font-bold">
-                    <h2 className="text-3xl">Recommended</h2>
-                  </div>
-
-                  <div className="results-listing py-8 grid gap-5 grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2" aria-live="polite">
-                    {resultsStore.recommendedListing && resultsStore.recommendedListing.map((item: any) => <SearchResultCard clickHandler={() => this.openModal()} item={item} key={`${item.imdbID}_${item.Year}`} />) }
-                  </div>
-                </div> }
-              </div>
-            )
-          )}
+              )
+            }
+          {/* </Suspense> */}
         </section>
       </main>
     )

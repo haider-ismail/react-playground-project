@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { IMovie } from '../../types/types';
-import ResultStore from '../../stores/resultsStore';
+import { IMovie } from '../../../types/types';
+import ResultStore from '../../../stores/resultsStore';
 
 interface IProps {
   item: IMovie;

@@ -36,6 +36,7 @@ const Header: React.FC<IProps> = ({ resultsStore }) => {
       }
     }, 500)
     return () => clearTimeout(typingTimeoutId)
+    // @ts-ignore
   }, [keyword])
   
   return (

@@ -1,3 +1,8 @@
+## Hello world!
+I'm Haider, a front-end developer residing in Birmingham, UK.
+
+Welcome to my React playground, which I created to experiment with the latest React features. 
+
 ### Prerequisites
 - [Yarn](https://yarnpkg.com/en/docs/install)
 
@@ -14,9 +19,7 @@ Once dependancies are installed, run
 
 Runs on port :3000 (http://localhost:3000)
 
-TODO:
-- bug when using header search - url params do not always update
-
+### TODO:
 
 
 
@@ -31,11 +34,11 @@ ENHANCEMENTS:
 - Anything else that you can think of!
 
 
-## Examples of ReactJs features used in components:
+### Examples of ReactJs features used in components:
 
-Portals
+#### Portals ([Docs](https://reactjs.org/docs/portals.html))
 -  `<Modal />` [Go to file](./src/components/Modal/Modal.tsx)
 
 
-useEffect hook
+#### useEffect hook ([Docs](https://reactjs.org/docs/hooks-reference.html#useeffect))
 - `<Header />` [Go to file](./src/components/Header/Header.tsx)

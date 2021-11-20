@@ -19,7 +19,7 @@ export default class ResultsStore {
   @observable loading: boolean = false;
   @observable searched: boolean = false;
   @observable errorMessage: string | null = null;
-  @observable perPage: Number = 9;
+  @observable perPage: Number = 6;
   @observable currentPageIndex: Number = 0;
   @observable totalPages: Number = 0;
   @observable queryParams: IQueryParams = {}
@@ -85,15 +85,27 @@ export default class ResultsStore {
   }
 
   @action
-  incrementPage = async () => {
+  incrementPage() {
+    console.log('incrementPage');
+    
     if (Math.abs(this.currentPageIndex as any + 1) > this.totalPages ) return
     this.currentPageIndex = Math.abs(this.currentPageIndex as any + 1)
+    console.log('this.totalPages', this.totalPages);
+    
+    console.log('this.currentPageIndex', this.currentPageIndex);
+    
   }
 
   @action
-  decrementPage = async () => {
+  decrementPage() {
     if (this.currentPageIndex <= 0) return
     this.currentPageIndex = Math.abs(this.currentPageIndex as any  - 1)
+
+    console.log('decremt');
+    console.log('this.totalPages', this.totalPages);
+    
+    console.log('this.currentPageIndex', this.currentPageIndex);
+    
   }
 
   @action
@@ -103,6 +115,13 @@ export default class ResultsStore {
     const to = Math.abs(paginationOffset as any + this.perPage)
 
     const paginated = this.results.slice(paginationOffset, to)
+
+    console.log(`paginatedOffser: ${paginationOffset}, to: ${to}`);
+
+    console.log('paginated', paginated);
+    
+    
+    
     return paginated
   }
 
