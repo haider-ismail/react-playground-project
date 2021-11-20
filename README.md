@@ -1,7 +1,7 @@
 ## Hello world!
 I'm Haider, a front-end developer residing in Birmingham, UK.
 
-Welcome to my React playground, which I created to experiment with the latest React features. 
+Welcome to my React playground, which I created to experiment with the latest React features. Feel free to clone, break and experiment with it yourself! 
 
 ### Prerequisites
 - [Yarn](https://yarnpkg.com/en/docs/install)
@@ -19,19 +19,12 @@ Once dependancies are installed, run
 
 Runs on port :3000 (http://localhost:3000)
 
-### TODO:
+#### Creating and adding API for OMDAPI
 
+- In order to make requests to the movie database service http://www.omdbapi.com/, you will need to first create an API key at http://www.omdbapi.com/
+- Once you have the API key, copy the `sample.env` file and rename it to `.env` and add the API key for ENV variable `REACT_APP_OMDB_API_KEY`
 
-
-ENHANCEMENTS:
-- Allow searching based on genre or different criteria 
-- Make use of lazy loading 
-- Random movie finder 
-- Add a method to buy or rent the film from somewhere like Amazon 
-- Add another theme 
-- Allow the layout to change from grid view to row view 
-- Optimise for ultimate performance 
-- Anything else that you can think of!
+That's it! :)
 
 
 ### Examples of ReactJs features used in components:

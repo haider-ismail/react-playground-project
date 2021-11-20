@@ -54,3 +54,5 @@ build/**/*
 # Compiled stylesheets
 tailwind.output.css
 
+# ENV files
+.env
