@@ -42,3 +42,6 @@ ENHANCEMENTS:
 
 #### useEffect hook ([Docs](https://reactjs.org/docs/hooks-reference.html#useeffect))
 - `<Header />` [Go to file](./src/components/Header/Header.tsx)
+
+#### React.lazy & React.Suspense ([Docs](https://reactjs.org/docs/react-api.html#reactlazy))
+- `<Results />` [Go to file](./src/views/Results/Results.tsx)

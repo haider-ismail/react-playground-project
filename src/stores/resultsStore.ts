@@ -34,6 +34,17 @@ export default class ResultsStore {
     return  Math.ceil(Math.abs(this.totalPages as any))
   }
 
+  @computed
+  get getPaginatedResults() {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const paginationOffset = Math.abs(this.currentPageIndex  as any  * <any>this.perPage)
+    const to = Math.abs(paginationOffset as any + this.perPage)
+
+    const paginated = this.results.slice(paginationOffset, to)
+    
+    return paginated
+  }
+
   /**
    * This is called when keyword is entered into the header search-box
    * @param input 
@@ -106,23 +117,6 @@ export default class ResultsStore {
     
     console.log('this.currentPageIndex', this.currentPageIndex);
     
-  }
-
-  @action
-  getPaginatedResults() {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    const paginationOffset = Math.abs(this.currentPageIndex  as any  * <any>this.perPage)
-    const to = Math.abs(paginationOffset as any + this.perPage)
-
-    const paginated = this.results.slice(paginationOffset, to)
-
-    console.log(`paginatedOffser: ${paginationOffset}, to: ${to}`);
-
-    console.log('paginated', paginated);
-    
-    
-    
-    return paginated
   }
 
   @action

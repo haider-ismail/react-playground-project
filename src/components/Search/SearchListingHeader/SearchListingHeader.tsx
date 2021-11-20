@@ -10,11 +10,11 @@ const SearchListingHeader: React.FC<IProps> = ({ resultsStore }) => {
   const results = resultsStore?.results
 
   const showNextPage = () => {
-    resultsStore?.incrementPage()
+    if (resultsStore) resultsStore.incrementPage()
   }
 
   const showPreviousPage = () => {
-    resultsStore?.decrementPage()
+    if (resultsStore) resultsStore.decrementPage()
   }
   
   return (
