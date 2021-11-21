@@ -5,11 +5,11 @@ import { inject, observer } from 'mobx-react';
 import ResultStore from '../../stores/resultsStore';
 import UIStore from '../../stores/uiStore';
 
-import SearchListingHeader from '../../components/Search/SearchListingHeader';
-import SearchListing from '../../components/Search/SearchListing';
+import SearchListingHeader from '../../components/Result/ResultListingHeader';
+import SearchListing from '../../components/Result/ResultListing';
 import Modal from '../../components/Modal';
 
-const SearchResultModalContent = React.lazy(() => import('../../components/Search/SearchResultModalContent'));
+const ResultItemModalContent = React.lazy(() => import('../../components/Result/ResultItemModalContent'));
 
 interface IProps {
   resultsStore: ResultStore;
@@ -18,10 +18,7 @@ interface IProps {
 
 class Results extends Component<IProps> {
   componentDidMount() {
-    console.log('componentDidMount');
-    
     const { resultsStore } = this.props
-
     resultsStore.getSearchTerms()
   }
 
@@ -32,12 +29,9 @@ class Results extends Component<IProps> {
   }
 
   render() {
-    const { uiStore } = this.props;
-
-    const { resultsStore } = this.props;
+    const { uiStore, resultsStore } = this.props;
     const { resultModalOpen } = uiStore
     const { keyword, results, loading, errorMessage, selectedItem, getPaginatedResults, recommendedListing } = resultsStore
-
   
     return (
       <main className="home">
@@ -48,7 +42,7 @@ class Results extends Component<IProps> {
               <h2 className="text-white text-2xl mb-4">Loading information</h2>
             </div>}>
 
-            <SearchResultModalContent selectedItem={selectedItem} />
+            <ResultItemModalContent selectedItem={selectedItem} />
           </Suspense>
         </Modal>}
   
@@ -57,13 +51,13 @@ class Results extends Component<IProps> {
             !loading && results.length ? (
               <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md">
                 <SearchListingHeader />
-                <SearchListing resultItems={getPaginatedResults}  clickHandler={() => this.openModal()} />
+                <SearchListing resultItems={getPaginatedResults} clickHandler={() => this.openModal()} />
               </div>
   
             ) : (
 
               <div>
-                { keyword && (results && results.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 mb-8 rounded-md text-white text-center">
+                { keyword && !loading && (results && results.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 mb-8 rounded-md text-white text-center">
                   <h3 className="text-2xl mb-4">No results matching "{resultsStore.keyword}" found</h3>
                   { errorMessage && <p className="text-lg">{errorMessage}</p> }
                 </div> }

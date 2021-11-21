@@ -6,7 +6,7 @@ interface IProps {
   resultsStore?: ResultStore;
 }
 
-const SearchListingHeader: React.FC<IProps> = ({ resultsStore }) => {
+const ResultListingHeader: React.FC<IProps> = ({ resultsStore }) => {
   const results = resultsStore?.results
 
   const showNextPage = () => {
@@ -36,4 +36,4 @@ const SearchListingHeader: React.FC<IProps> = ({ resultsStore }) => {
   )
 }
 
-export default inject('resultsStore')(observer(SearchListingHeader));
+export default inject('resultsStore')(observer(ResultListingHeader));

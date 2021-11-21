@@ -8,7 +8,7 @@ interface IProps {
   resultsStore?: ResultStore;
 }
 
-const SearchResultModal: React.FC<IProps> = ({ selectedItem }) => {
+const ResultItemModalContent: React.FC<IProps> = ({ selectedItem }) => {
   return (
     <>
     <div className="flex flex-wrap w-full">
@@ -28,4 +28,4 @@ const SearchResultModal: React.FC<IProps> = ({ selectedItem }) => {
     </>
 )};
 
-export default inject('resultsStore')(observer(SearchResultModal));
+export default inject('resultsStore')(observer(ResultItemModalContent));

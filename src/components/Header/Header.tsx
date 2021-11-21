@@ -1,44 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { Link } from "react-router-dom";
-import { inject, observer } from 'mobx-react';
-import ResultsStore from '../../stores/resultsStore';
-import history from '../../history';
 
 // hooks
 import useCurrentPath from '../../hooks/currentPath'
 
-import './Header.scss';
+import SearchForm from '../SearchForm'
 
-interface IProps {
-  resultsStore?: ResultsStore;
-}
-
-const Header: React.FC<IProps> = ({ resultsStore }) => { 
-  const [keyword, setKeyword] = useState<string|null>(null)
-  const firstUpdate = useRef(true);
-
-  // Utilising useEffect hook and timeout to only trigger search when user stops typing
-  useEffect(() => {
-    const typingTimeoutId = setTimeout(() => {
-      if (resultsStore) {
-        // Skip for first render 
-        if (firstUpdate.current) {
-          firstUpdate.current = false;
-          return
-        }
-
-        resultsStore.setKeyword(keyword as string)
-
-        history.push({
-          pathname: '/results',
-          search: resultsStore.getQueryParamsString()
-        })
-      }
-    }, 500)
-    return () => clearTimeout(typingTimeoutId)
-    // @ts-ignore
-  }, [keyword])
-  
+const Header: React.FC = () => { 
   return (
     <header className="py-8 md:pt-16 md:pb-10">
       <div className="container mx-auto">
@@ -48,18 +16,7 @@ const Header: React.FC<IProps> = ({ resultsStore }) => {
               </Link>
 
               { useCurrentPath() === '/results' && 
-                <form className="w-full md:max-w-md relative mt-4 sm:mt-0" onSubmit={e => { e.preventDefault() }}>
-                  <input type="search" 
-                    className="border-2 px-3 py-2 w-full  border-white text-white font-bold pr-"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      setKeyword(e.target.value)
-                    }}
-                    id="keyword"
-                    value={(keyword !== null ? keyword : resultsStore?.keyword)} 
-                    placeholder="Type to search..." 
-                    aria-controls="resultsListing"
-                  />
-                </form>
+                <SearchForm />
               } 
           </div>
       </div>
@@ -67,4 +24,4 @@ const Header: React.FC<IProps> = ({ resultsStore }) => {
   );
 }
 
-export default inject('resultsStore')(observer(Header));
+export default Header;
