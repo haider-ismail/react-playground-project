@@ -18,18 +18,20 @@ const uiStore = new UIStore();
 class App extends Component {
   render() {
     return (
+      <React.StrictMode>
         <Provider
         resultsStore={resultsStore}
         uiStore={uiStore}
-      >
-        <Router>
-          <Header />
-          <Switch>
-              <Route path="/" exact={true} component={Home} />
-              <Route path="/results" component={Results} />
-          </Switch>
-        </Router>
-      </Provider>
+        >
+          <Router>
+            <Header />
+            <Switch>
+                <Route path="/" exact={true} component={Home} />
+                <Route path="/results" component={Results} />
+            </Switch>
+          </Router>
+        </Provider>
+      </React.StrictMode>
     );
   }
 }
