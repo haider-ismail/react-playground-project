@@ -9,7 +9,7 @@ interface IProps {
   clickHandler: () => void;
 }
 
-const SearchResultCard: React.FC<IProps> = ({ item, clickHandler, resultsStore }) => {
+const ResultItemCard: React.FC<IProps> = ({ item, clickHandler, resultsStore }) => {
   const handeClick = () => {
     if(resultsStore) resultsStore.setSelectedItem(item)
     clickHandler()
@@ -29,4 +29,4 @@ const SearchResultCard: React.FC<IProps> = ({ item, clickHandler, resultsStore }
   </article>
 )};
 
-export default inject('resultsStore')(observer(SearchResultCard));
+export default inject('resultsStore')(observer(ResultItemCard));

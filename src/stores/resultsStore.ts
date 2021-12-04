@@ -142,7 +142,6 @@ export default class ResultsStore {
     this.loading = true;
     try {
       const response = await axios.get(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=${this.keyword}`);
-      
       if (_get(response, 'data.Search')) {
         this.results = _get(response, 'data.Search', []);
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
