@@ -1,5 +1,5 @@
 ## Hello world!
-I'm Haider, a front-end developer residing in Birmingham, UK.
+I'm Haider, an experienced contract front-end developer residing in Birmingham, UK.
 
 Welcome to my React playground, which I created to experiment with the latest React features, including the features released in React 18 beta! Feel free to clone, break and experiment with it yourself! 
 
