@@ -74,7 +74,7 @@ export default class ResultsStore {
     if (search && !_isEmpty(params)) await this.fetchResults()
     if (_isEmpty(params)) {
       this.resetResults()
-      await this.fetchRecommended()
+      if (!this.recommendedListing.length) await this.fetchRecommended()
     } 
   }
 
@@ -168,10 +168,7 @@ export default class ResultsStore {
       const response = await axios.get(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=christmas`)
       
       if (_get(response, 'data.Search')) {
-        this.recommendedListing = _get(response, 'data.Search', [])
-
-        console.log('this.recommendedListing', this.recommendedListing)
-        
+        this.recommendedListing = _get(response, 'data.Search', [])        
       } else {
         this.recommendedListing = []
       }

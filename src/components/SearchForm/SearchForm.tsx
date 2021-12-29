@@ -24,20 +24,17 @@ const SearchForm: React.FC<IProps> = ({ resultsStore, submitHandler, cssClasses 
   // Utilising useEffect hook and timeout to only trigger search when user stops typing
   useEffect(() => {
     const typingTimeoutId = setTimeout(() => {
-      if (resultsStore) {
-        // Skip for first render 
-        if (firstUpdate.current) {
-          firstUpdate.current = false;
-          return
-        }
+      if (!resultsStore) return
 
-        resultsStore.setKeyword(keyword as string)
+      // Skip for first render 
+      if (firstUpdate.current) return firstUpdate.current = false
 
-        history.push({
-          pathname: '/results',
-          search: resultsStore.getQueryParamsString()
-        })
-      }
+      resultsStore.setKeyword(keyword as string)
+
+      history.push({
+        pathname: '/results',
+        search: resultsStore.getQueryParamsString()
+      })
     }, 500)
     return () => clearTimeout(typingTimeoutId)
     // @ts-ignore
