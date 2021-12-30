@@ -18,7 +18,12 @@ interface IProps {
 }
 
 class Results extends Component<IProps> {
-  componentDidMount() {
+  constructor(props: IProps) {
+    super(props);
+    console.log('constructor')
+  }
+
+  UNSAFE_componentDidMount() {
     const { resultsStore } = this.props
     resultsStore.getSearchTerms()
   }

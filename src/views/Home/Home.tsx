@@ -13,14 +13,29 @@ interface IProps {
 }
 
 class Home extends Component<IProps> {
+  constructor(props: IProps) {
+    super(props);
+    console.log('constructor')
+  }
+
   handleFormSubmit = () => {
     const { history, resultsStore } = this.props;
+
+    console.log('[handleFormSubmit] -->');
     
     history.push({
       pathname: '/results',
       search: `?keyword=${resultsStore.keyword}`
     })
   }
+  
+  UNSAFE_componentDidMount() {    // If we have a snapshot value, we've just added new items.
+    // Adjust scroll so these new items don't push the old ones out of view.
+    // (snapshot here is the value returned from getSnapshotBeforeUpdate)
+    console.log(`[UNSAFE_componentDidMount]-->`);
+    
+  }
+
 
   render() {
     return (
