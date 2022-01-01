@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 
 import { IMovie } from '../../../types/types';
 
@@ -23,4 +24,4 @@ const ResultListing: React.FC<IProps> = ({ resultItems, clickHandler }) => {
   )
 }
 
-export default ResultListing;
+export default observer(ResultListing);

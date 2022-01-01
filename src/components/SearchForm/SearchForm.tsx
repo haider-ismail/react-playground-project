@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, FormEvent } from 'react';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import history from '../../history';
 
 import { useStores } from '../../hooks/useStores'
@@ -24,6 +24,8 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
 
   // Utilising useEffect hook and timeout to only trigger search when user stops typing
   useEffect(() => {
+    console.log('use effect');
+    
     const typingTimeoutId = setTimeout(() => {
       if (!resultsStore) return
 

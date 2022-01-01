@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import get from 'lodash/get';
 
 import { useStores } from '../../hooks/useStores'
