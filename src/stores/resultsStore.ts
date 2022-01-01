@@ -11,7 +11,7 @@ import {
   IQueryParams
 } from '../types/types';
 
-export default class ResultsStore {
+export class ResultsStore {
   @observable keyword: string = '';
   @observable results: IMovie[] = [];
   @observable recommendedListing: IMovie[] = [];
@@ -51,6 +51,8 @@ export default class ResultsStore {
    */
   @action
   setKeyword = async (input: string) => {
+    console.log('[setKeyword] --> input:', input);
+    
     this.keyword = input
     this.setParams(true)
   }
@@ -150,6 +152,9 @@ export default class ResultsStore {
         if (_get(response, 'data.Error')) this.errorMessage = _get(response, 'data.Error')
         this.results = []
       }
+
+      console.log('this.results', this.results);
+      
 
       this.loading = false
       this.searched = true

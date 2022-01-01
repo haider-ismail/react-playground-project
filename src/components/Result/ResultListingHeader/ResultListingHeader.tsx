@@ -1,12 +1,14 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-import ResultStore from '../../../stores/resultsStore';
+import { observer } from 'mobx-react';
+
+import { useStores } from '../../../hooks/useStores'
 
 interface IProps {
-  resultsStore?: ResultStore;
 }
 
-const ResultListingHeader: React.FC<IProps> = ({ resultsStore }) => {
+const ResultListingHeader: React.FC<IProps> = () => {
+  const { resultsStore } = useStores()
+
   const results = resultsStore?.results
 
   const showNextPage = () => {
@@ -36,4 +38,4 @@ const ResultListingHeader: React.FC<IProps> = ({ resultsStore }) => {
   )
 }
 
-export default inject('resultsStore')(observer(ResultListingHeader));
+export default observer(ResultListingHeader);

@@ -1,22 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
-import { inject, observer } from 'mobx-react';
-import ResultStore from '../../stores/resultsStore';
-import UIStore from '../../stores/uiStore';
+import { observer } from 'mobx-react';
 import get from 'lodash/get';
+
+import { useStores } from '../../hooks/useStores'
 
 import './Modal.scss';
 
 interface IProps {
-  resultsStore?: ResultStore;
-  uiStore?: UIStore
 }
 
-const Home: React.FunctionComponent<IProps> = ( { uiStore, children }) => {
+const ModalFC: React.FunctionComponent<IProps> = ( { children }) => {
+  const { uiStore } = useStores()
 
   const closeModal = (e: React.MouseEvent<HTMLButtonElement> ) => {
-    if(e) e.preventDefault()
     if(uiStore) uiStore.toggleModal()
   }
 
@@ -36,4 +34,4 @@ const Home: React.FunctionComponent<IProps> = ( { uiStore, children }) => {
   )
 };
 
-export default inject('uiStore')(observer(Home));
+export default observer(ModalFC);

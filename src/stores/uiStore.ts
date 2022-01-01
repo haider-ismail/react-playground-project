@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 
-export default class UIStore {
+export class UIStore {
   @observable resultModalOpen: boolean = false;
 
   @action

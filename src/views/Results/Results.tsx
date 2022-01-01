@@ -1,9 +1,8 @@
-import React, { Component, Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 
-import { inject, observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 
-import ResultStore from '../../stores/resultsStore';
-import UIStore from '../../stores/uiStore';
+import { useStores } from '../../hooks/useStores'
 
 import ResultListingHeader from '../../components/Result/ResultListingHeader';
 import ResultListingPlaceholder from '../../components/Result/ResultListing/ResultListingPlaceholder';
@@ -12,32 +11,26 @@ import Modal from '../../components/Modal';
 const ResultItemModalContent = React.lazy(() => import('../../components/Result/ResultItemModalContent'));
 const ResultListing = React.lazy(() => import('../../components/Result/ResultListing'));
 
-interface IProps {
-  resultsStore: ResultStore;
-  uiStore: UIStore
-}
 
-class Results extends Component<IProps> {
-  constructor(props: IProps) {
-    super(props);
-    console.log('constructor')
-  }
 
-  UNSAFE_componentDidMount() {
-    const { resultsStore } = this.props
+interface IProps {}
+
+const Results: React.FunctionComponent<IProps> = () => {
+  const { uiStore, resultsStore  } = useStores()
+  const { resultModalOpen } = uiStore
+  const { keyword, results, loading, errorMessage, selectedItem, getPaginatedResults, recommendedListing } = resultsStore
+
+  // Utilising useEffect hook and timeout to only trigger search when user stops typing
+  useEffect(() => {
+    if (!resultsStore) return
+
     resultsStore.getSearchTerms()
-  }
+    // @ts-ignore
+  }, [resultsStore])
 
-  openModal = () => {
-    const { uiStore } = this.props;
-
+  const openModal = () => {
     if(uiStore) uiStore.toggleModal()
   }
-
-  render() {
-    const { uiStore, resultsStore } = this.props;
-    const { resultModalOpen } = uiStore
-    const { keyword, results, loading, errorMessage, selectedItem, getPaginatedResults, recommendedListing } = resultsStore
   
     return (
       <main className="home">
@@ -68,7 +61,7 @@ class Results extends Component<IProps> {
 
               { keyword && (results && results.length > 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md">
                 <ResultListingHeader />
-                <ResultListing resultItems={getPaginatedResults} clickHandler={() => this.openModal()} />
+                <ResultListing resultItems={getPaginatedResults} clickHandler={() => openModal()} />
               </div>}
 
               { !keyword && (results && results.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
@@ -76,14 +69,13 @@ class Results extends Component<IProps> {
                   <h2 className="text-3xl">Recommended</h2>
                 </div>
 
-                <ResultListing resultItems={recommendedListing}  clickHandler={() => this.openModal()} />
+                <ResultListing resultItems={recommendedListing}  clickHandler={() => openModal()} />
               </div> }
             </Suspense>
           }
         </section>
       </main>
     )
-  }
 };
 
-export default inject('resultsStore', 'uiStore')(observer(Results));
+export default observer(Results);

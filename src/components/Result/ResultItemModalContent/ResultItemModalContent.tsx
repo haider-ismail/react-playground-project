@@ -1,11 +1,9 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { IMovie } from '../../../types/types';
-import ResultStore from '../../../stores/resultsStore';
 
 interface IProps {
   selectedItem: IMovie | null;
-  resultsStore?: ResultStore;
 }
 
 const ResultItemModalContent: React.FC<IProps> = ({ selectedItem }) => {
@@ -28,4 +26,4 @@ const ResultItemModalContent: React.FC<IProps> = ({ selectedItem }) => {
     </>
 )};
 
-export default inject('resultsStore')(observer(ResultItemModalContent));
+export default observer(ResultItemModalContent);

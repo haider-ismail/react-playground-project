@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useRef, FormEvent } from 'react';
-import { inject, observer } from 'mobx-react';
-import ResultsStore from '../../stores/resultsStore';
+import { observer } from 'mobx-react';
 import history from '../../history';
+
+import { useStores } from '../../hooks/useStores'
 
 import './SearchForm.scss';
 
 interface IProps {
-  resultsStore?: ResultsStore;
   submitHandler?: () => void;
   cssClasses?: string;
 }
 
-const SearchForm: React.FC<IProps> = ({ resultsStore, submitHandler, cssClasses }) => { 
+const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => { 
+  const { resultsStore } = useStores()
   const [keyword, setKeyword] = useState<string|null>(null)
   const firstUpdate = useRef(true);
 
@@ -37,7 +38,7 @@ const SearchForm: React.FC<IProps> = ({ resultsStore, submitHandler, cssClasses 
       })
     }, 500)
     return () => clearTimeout(typingTimeoutId)
-    // @ts-ignore
+    // eslint-disable-next-line
   }, [keyword])
   
   return (
@@ -58,4 +59,4 @@ const SearchForm: React.FC<IProps> = ({ resultsStore, submitHandler, cssClasses 
   );
 }
 
-export default inject('resultsStore')(observer(SearchForm));
+export default observer(SearchForm);

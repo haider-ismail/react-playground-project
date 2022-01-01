@@ -1,15 +1,17 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { IMovie } from '../../../types/types';
-import ResultStore from '../../../stores/resultsStore';
+
+import { useStores } from '../../../hooks/useStores'
 
 interface IProps {
   item: IMovie;
-  resultsStore?: ResultStore;
   clickHandler: () => void;
 }
 
-const ResultItemCard: React.FC<IProps> = ({ item, clickHandler, resultsStore }) => {
+const ResultItemCard: React.FC<IProps> = ({ item, clickHandler }) => {
+  const { resultsStore } = useStores()
+
   const handeClick = () => {
     if(resultsStore) resultsStore.setSelectedItem(item)
     clickHandler()
@@ -29,4 +31,4 @@ const ResultItemCard: React.FC<IProps> = ({ item, clickHandler, resultsStore }) 
   </article>
 )};
 
-export default inject('resultsStore')(observer(ResultItemCard));
+export default observer(ResultItemCard);
