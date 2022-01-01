@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './styles/tailwind.output.css';
 
@@ -22,4 +23,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default observer(App);

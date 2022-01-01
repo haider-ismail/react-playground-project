@@ -11,22 +11,25 @@ import Modal from '../../components/Modal';
 const ResultItemModalContent = React.lazy(() => import('../../components/Result/ResultItemModalContent'));
 const ResultListing = React.lazy(() => import('../../components/Result/ResultListing'));
 
-
-
 interface IProps {}
 
-const Results: React.FunctionComponent<IProps> = () => {
+const Results: React.FunctionComponent<IProps> = observer(() => {
   const { uiStore, resultsStore  } = useStores()
+
+  
   const { resultModalOpen } = uiStore
   const { keyword, results, loading, errorMessage, selectedItem, getPaginatedResults, recommendedListing } = resultsStore
 
   // Utilising useEffect hook and timeout to only trigger search when user stops typing
   useEffect(() => {
-    if (!resultsStore) return
+    // if (!resultsStore) return
 
     resultsStore.getSearchTerms()
     // @ts-ignore
   }, [resultsStore])
+
+  console.log('results.tsx : recommendedListing', resultsStore.recommendedListing);
+  console.log('resultsStore', resultsStore);
 
   const openModal = () => {
     if(uiStore) uiStore.toggleModal()
@@ -76,6 +79,6 @@ const Results: React.FunctionComponent<IProps> = () => {
         </section>
       </main>
     )
-};
+});
 
-export default observer(Results);
+export default Results;

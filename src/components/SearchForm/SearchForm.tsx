@@ -39,7 +39,7 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
     }, 500)
     return () => clearTimeout(typingTimeoutId)
     // eslint-disable-next-line
-  }, [keyword])
+  }, [keyword, resultsStore])
   
   return (
     <form className={`flex justify-center w-full md:max-w-md relative mt-4 sm:mt-0 ${cssClasses}`} onSubmit={e => { ( submitHandler ? handleSubmit(e) : e.preventDefault() ) }}>

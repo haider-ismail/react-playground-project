@@ -206,6 +206,8 @@ export class ResultsStore {
   */
   @action
   getSearchTerms = () => {
+    console.log('getSearchTerms');
+    
     const searchTerms = queryString.parse(window.location.search)
       
     this.setSearchTerms(searchTerms);
