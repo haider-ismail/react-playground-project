@@ -1,30 +1,30 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { observer } from 'mobx-react-lite';
-
-import { useStores } from '../../hooks/useStores'
 
 import { History } from "history";
 
 import SearchForm from '../../components/SearchForm'
 
+// contexts
+import { ResultsContext } from "../../contexts/resultsStoreContext";
+
 interface IProps {
   history: History
 }
 
-
-
 const Home: React.FunctionComponent<IProps> = ( { history } ) => {
 
-  const { resultsStore } = useStores()
+  const  { keyword } = useContext(ResultsContext);
 
   const handleFormSubmit = () => {
+    console.log('Home.tsx [handleFormSubmit] -->');
+    
     history.push({
       pathname: '/results',
-      search: `?keyword=${resultsStore.keyword}`
+      search: `?keyword=${keyword}`
     })
   }
-  
 
 
   return (

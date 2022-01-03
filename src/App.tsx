@@ -1,22 +1,26 @@
 import React from 'react';
-// import { observer } from 'mobx-react-lite';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import { StoresContext } from './contexts/storesContext'
-
-// import { useStores } from './hooks/useStores'
 
 import './styles/tailwind.output.css';
 
+// contexts
+import { ResultsContext } from "./contexts/resultsStoreContext";
+
+
+// hooks
+import { useResultsStore } from "./hooks/useResultsStore";
+
+// components
 import Home from './views/Home/Home';
 import Results from './views/Results/Results';
 import Header from './components/Header';
 
 const App: React.FunctionComponent = () => {
-  // const stores = useStores()
+  const resultsStoreData = useResultsStore();
   
   return (
     <React.StrictMode>
-      {/* <StoresContext.Provider value={ stores }> */}
+      <ResultsContext.Provider value={ resultsStoreData }>
         <Router>
           <Header />
           <Switch>
@@ -24,7 +28,7 @@ const App: React.FunctionComponent = () => {
               <Route path="/results" component={Results} />
           </Switch>
         </Router>
-      {/* </StoresContext.Provider> */}
+      </ResultsContext.Provider>
     </React.StrictMode>
   );
 };

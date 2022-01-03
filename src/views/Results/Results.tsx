@@ -1,9 +1,14 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useContext } from 'react';
 
 import { observer } from 'mobx-react-lite';
 
+// hooks
 import { useStores } from '../../hooks/useStores'
 
+// contexts
+import { ResultsContext } from "../../contexts/resultsStoreContext";
+
+// components
 import ResultListingHeader from '../../components/Result/ResultListingHeader';
 import ResultListingPlaceholder from '../../components/Result/ResultListing/ResultListingPlaceholder';
 import Modal from '../../components/Modal';
@@ -14,20 +19,14 @@ const ResultListing = React.lazy(() => import('../../components/Result/ResultLis
 interface IProps {}
 
 const Results: React.FunctionComponent<IProps> = () => {
-  const { uiStore, resultsStore  } = useStores()
+  const { uiStore  } = useStores()
   const { resultModalOpen } = uiStore
-  const { keyword, results, loading, errorMessage, selectedItem, getPaginatedResults, recommendedListing } = resultsStore
 
-  // Utilising useEffect hook and timeout to only trigger search when user stops typing
+  const  { keyword, loading, errorMessage, selectedItem, recommendedListing, paginatedResults, getSearchTerms } = useContext(ResultsContext);
+
   useEffect(() => {
-    // if (!resultsStore) return
-
-    resultsStore.getSearchTerms()
-    // @ts-ignore
-  })
-
-  console.log('results.tsx : recommendedListing', resultsStore.recommendedListing);
-  console.log('resultsStore', resultsStore);
+    getSearchTerms()    
+  }, [keyword])
 
   const openModal = () => {
     if(uiStore) uiStore.toggleModal()
@@ -55,22 +54,22 @@ const Results: React.FunctionComponent<IProps> = () => {
               <ResultListingPlaceholder />
             </div>}>
 
-            { resultsStore.keyword && !loading && (results && results.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 mb-8 rounded-md text-white text-center">
-              <h3 className="text-2xl mb-4">No results matching "{resultsStore.keyword}" found</h3>
+            { keyword && !loading && (paginatedResults && paginatedResults.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 mb-8 rounded-md text-white text-center">
+              <h3 className="text-2xl mb-4">No results matching "{keyword}" found</h3>
               { errorMessage && <p className="text-lg">{errorMessage}</p> }
             </div> }
 
-            { resultsStore.keyword && (resultsStore.results && resultsStore.results.length > 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md">
+            {  keyword && (paginatedResults && paginatedResults.length > 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md">
               <ResultListingHeader />
-              <ResultListing resultItems={ resultsStore.getPaginatedResults } clickHandler={() => openModal()} />
+              <ResultListing resultItems={ paginatedResults } clickHandler={() => openModal()} />
             </div>}
 
-            { !resultsStore.keyword && (resultsStore.results && resultsStore.results.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
+            { !keyword && (paginatedResults && paginatedResults.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
               <div className="results-listing__header flex flex-wrap justify-between items-center text-white font-bold">
                 <h2 className="text-3xl">Recommended</h2>
               </div>
 
-              <ResultListing resultItems={resultsStore.recommendedListing}  clickHandler={() => openModal()} />
+              <ResultListing resultItems={recommendedListing}  clickHandler={() => openModal()} />
             </div> }
           </Suspense>
         }

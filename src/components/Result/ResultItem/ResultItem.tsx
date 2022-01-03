@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import { IMovie } from '../../../types/types';
 
-import { useStores } from '../../../hooks/useStores'
+// contexts
+import { ResultsContext } from "../../../contexts/resultsStoreContext";
 
 interface IProps {
   item: IMovie;
@@ -10,10 +11,10 @@ interface IProps {
 }
 
 const ResultItemCard: React.FC<IProps> = ({ item, clickHandler }) => {
-  const { resultsStore } = useStores()
+  const  { updateSelectedItem } = useContext(ResultsContext);
 
   const handeClick = () => {
-    if(resultsStore) resultsStore.setSelectedItem(item)
+    updateSelectedItem(item)
     clickHandler()
   }
 
