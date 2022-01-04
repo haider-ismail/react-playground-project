@@ -34,4 +34,8 @@ export interface ResultsStoreContextType {
   getPaginatedResults: () => Array<string>;
   getSearchTerms: () => Array<string>;
   updateSelectedItem: () => Array<string>;
+  getCurrentPage: () => number;
+  incrementPage: () => void;
+  decrementPage: () => void;
+  getTotalPages: () => number;
 };

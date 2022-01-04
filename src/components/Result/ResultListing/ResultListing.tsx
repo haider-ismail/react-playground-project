@@ -12,10 +12,6 @@ interface IProps {
 
 const ResultListing: React.FC<IProps> = ({ resultItems, clickHandler }) => { 
   const handleClick = () => clickHandler()
-
-  console.log('ResultsListing resultItems:' ,resultItems);
-  
-
   return (
     resultItems && 
       <div className="results-listing py-8 grid gap-5 grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2" id="resultsListing" aria-live="polite">

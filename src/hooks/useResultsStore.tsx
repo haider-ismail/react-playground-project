@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IMovie, IQueryParams } from '../types/types';
 import _forEach from 'lodash/forEach';
 import _get from 'lodash/get';
@@ -16,11 +16,18 @@ export const useResultsStore = () => {
   const [loading, setLoadingState] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string|null>(null)
   const [selectedItem, setSelectedItem] = useState<IMovie|null>(null)
-  const [searched, setSearchedState] = useState<boolean>(false)
-  const [perPage, setPerPage] = useState<number>(6)
+  // const [searched, setSearchedState] = useState<boolean>(false)
+  const [perPage] = useState<number>(6)
   const [currentPageIndex, setCurrentPageIndex] = useState<Number>(0)
   const [totalPages, setTotalPages] = useState<Number>(0)
   const [queryParams, setQueryParams] = useState<IQueryParams>({})
+
+  useEffect(() => {
+    console.log('%c useResultsStore [useEffect] -->', 'color: yellow;');
+    
+    updatePaginatedResults()
+  }, [results, currentPageIndex])
+
 
   const getQueryParamsString = () => {
     let params: any = queryParams
@@ -34,7 +41,6 @@ export const useResultsStore = () => {
     return queryString
   }
 
-
   const getCurrentPage = () => {
     return  Math.abs(currentPageIndex as any + 1)
   }
@@ -43,8 +49,7 @@ export const useResultsStore = () => {
     return  Math.ceil(Math.abs(totalPages as any))
   }
 
-  const updatedPaginatedResults = () => {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  const updatePaginatedResults = () => {
     const paginationOffset = Math.abs(currentPageIndex  as any  * perPage)
     const to = Math.abs(paginationOffset as any + perPage)
 
@@ -56,27 +61,25 @@ export const useResultsStore = () => {
    * This is called when keyword is entered into the header search-box
    * @param input 
    */
-  const updateKeyword = async (input: string = '', search: boolean = false) => {
-    console.log('[updateKeyword] --> input:', input);
+  const updateKeyword = async (input: string = '') => {
     setKeyword(input)
-
-    if (search) setParams(true)
   }
 
   const setParams = async (search: boolean = false) => {
+
+    console.log('setParams');
+    
     let params: any = {}
 
     if (keyword) {
       params.keyword = keyword
     }
-
-    console.log('[setParams] --> search:', search, ', keywrod:', keyword, ', params: ', params);
     
     setQueryParams(params)
     
     if (search && !_isEmpty(params)) await doSearch()
     if (_isEmpty(params)) {
-      // resetResults()
+      resetResults()
       if (!recommendedListing.length) await getRecommended()
     } 
   }
@@ -86,19 +89,19 @@ export const useResultsStore = () => {
     if (Math.abs(currentPageIndex as any + 1) > totalPages ) return
 
     setCurrentPageIndex(Math.abs(currentPageIndex as any + 1))
-    updatedPaginatedResults()
+    updatePaginatedResults()
   }
 
   const decrementPage = () => {
     if (currentPageIndex <= 0) return
 
     setCurrentPageIndex(Math.abs(currentPageIndex as any  - 1))
-    updatedPaginatedResults()
+    updatePaginatedResults()
   }
 
   const resetResults = () => {
-    setSearchedState(false)
-    // setResults([])
+    // setSearchedState(false)
+    setResults([])
     setCurrentPageIndex(0)
     setTotalPages(0)
   }
@@ -117,28 +120,26 @@ export const useResultsStore = () => {
 
     try {
       const response = await fetchResults(keyword);
-
-      console.log('[doSearch] --> keyword', keyword, ', response: ', response)
       
       if (_get(response, 'data.Search')) {
-        setResults(_get(response, 'data.Search', []));
+        const results = _get(response, 'data.Search', [])
+        // console.log('setResults', _get(response, 'data.Search', []), ', results.length:', results.length, ', perPAge:', perPage);
+
+        setResults(results);
+
         setTotalPages(Math.abs(results.length / perPage))
-        updatedPaginatedResults()
       } else {
         if (_get(response, 'data.Error')) setErrorMessage(_get(response, 'data.Error'))
-        console.log('[doSearch] error --> reset results');
         setResults([])
       }
 
       setLoadingState(false)
-      setSearchedState(true)
+      // setSearchedState(true)
      
     } catch (e) {
       console.error(e);
-      console.log('[doSearch] try/catch error --> reset results');
-      setResults([])
+      resetResults()
       setLoadingState(false)
-      setSearchedState(true)
     }
   }
 
@@ -148,9 +149,9 @@ export const useResultsStore = () => {
     
     try {
       const response = await fetchRecommended()
-      
-      if (_get(response, 'data.Search')) {
-        setRecommendedListing(_get(response, 'data.Search', []))
+        
+      if (response.length) {
+        setRecommendedListing(response)
       } else {
         setRecommendedListing([])
       }
@@ -199,6 +200,7 @@ export const useResultsStore = () => {
         updateKeyword(key)
       }
     })
+    setParams(true)
   }  
 
 
@@ -216,6 +218,10 @@ export const useResultsStore = () => {
     getQueryParamsString,
     doSearch,
     getSearchTerms,
-    updateSelectedItem
+    updateSelectedItem,
+    getCurrentPage,
+    incrementPage,
+    decrementPage,
+    getTotalPages
   }
 }

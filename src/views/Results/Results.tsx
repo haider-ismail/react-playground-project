@@ -25,6 +25,7 @@ const Results: React.FunctionComponent<IProps> = () => {
   const  { keyword, loading, errorMessage, selectedItem, recommendedListing, paginatedResults, getSearchTerms } = useContext(ResultsContext);
 
   useEffect(() => {
+    console.log('%c Results.tsx [useEffect] -->', 'color: yellow;');
     getSearchTerms()    
   }, [keyword])
 
