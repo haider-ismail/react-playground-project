@@ -63,7 +63,7 @@ export const useResultsStore = () => {
    * This is called when keyword is entered into the header search-box
    * @param input 
    */
-  const updateKeyword = async (input: string = '') => {
+  const updateKeyword = (input: string = '') => {
     setKeyword(input)
   }
 
@@ -190,7 +190,7 @@ export const useResultsStore = () => {
   const setSearchTerms = async (searchTerms: { [key: string]: any }) => {
     _forEach(searchTerms, (key, value) => {
       if (value === 'keyword') {
-        updateKeyword(key)
+        setKeyword(key)
       }
     })
   }  
@@ -207,7 +207,7 @@ export const useResultsStore = () => {
     queryParams,
     setResults,
     setParams,
-    updateKeyword,
+    setKeyword,
     getQueryParamsString,
     doSearch,
     getSearchTerms,

@@ -24,15 +24,15 @@ const App: React.FunctionComponent = () => {
   return (
     <React.StrictMode>
         <UIStoreContext.Provider value={ uiStoreData }>
-        <Router>
-          <Header />
-          <Switch>
-            <ResultsStoreContext.Provider value={ resultsStoreData }>
-              <Route path="/" exact={true} component={Home} />
-              <Route path="/results" component={Results} />
-            </ResultsStoreContext.Provider>
-          </Switch>
-        </Router>
+          <ResultsStoreContext.Provider value={ resultsStoreData }>
+            <Router>
+              <Header />
+              <Switch>
+                  <Route path="/" exact={true} component={Home} />
+                  <Route path="/results" component={Results} />
+              </Switch>
+            </Router>
+          </ResultsStoreContext.Provider>
         </UIStoreContext.Provider>
      
     </React.StrictMode>

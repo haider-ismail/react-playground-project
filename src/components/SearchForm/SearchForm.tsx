@@ -12,7 +12,9 @@ interface IProps {
 }
 
 const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => { 
-  const  { keyword, updateKeyword } = useContext(ResultsStoreContext);
+  const  { keyword, setKeyword } = useContext(ResultsStoreContext);
+
+
   const [localKeyword, setLocalKeyword] = useState<string|null>(null)
   const firstUpdate = useRef(true);
 
@@ -34,7 +36,7 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
         search: `?keyword=${localKeyword}`
       })
 
-      updateKeyword(localKeyword as string);
+      setKeyword(localKeyword as string);
     }, 500)
     return () => clearTimeout(typingTimeoutId)
   }, [localKeyword, keyword])
