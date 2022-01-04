@@ -23,11 +23,11 @@ export const useResultsStore = () => {
   const [queryParams, setQueryParams] = useState<IQueryParams>({})
 
   useEffect(() => {
-    console.log('%c useResultsStore [useEffect] -->', 'useResultsStore [useEffect] --> recommendedListing.length', recommendedListing.length, 'color: yellow;');
-    // console.log('useResultsStore [useEffect] --> recommendedListing.length', recommendedListing.length);
+    console.log('%c useResultsStore [useEffect] -->', 'color: yellow;');
     updatePaginatedResults()
 
     if (_isEmpty(queryParams) && !recommendedListing.length) getRecommended()
+    // @ts-ignore
   }, [results, recommendedListing, currentPageIndex])
 
 
@@ -57,14 +57,6 @@ export const useResultsStore = () => {
 
     const paginated = results.slice(paginationOffset, to)
     setPaginatedResults(paginated)
-  }
-
-  /**
-   * This is called when keyword is entered into the header search-box
-   * @param input 
-   */
-  const updateKeyword = (input: string = '') => {
-    setKeyword(input)
   }
 
   const setParams = async (search: boolean = false) => {

@@ -15,7 +15,7 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
   const  { keyword, setKeyword } = useContext(ResultsStoreContext);
 
 
-  const [localKeyword, setLocalKeyword] = useState<string|null>(null)
+  const [localKeyword, setLocalKeyword] = useState<string>('')
   const firstUpdate = useRef(true);
 
   const handleSubmit = async (e: FormEvent) =>  {
@@ -27,9 +27,11 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
   // Utilising useEffect hook and timeout to only trigger search when user stops typing
   useEffect(() => {    
     const typingTimeoutId = setTimeout(() => {
-
       // Skip for first render 
-      if (firstUpdate.current) return firstUpdate.current = false;
+      if (firstUpdate.current) { 
+        if (keyword) setLocalKeyword(keyword)
+        return firstUpdate.current = false;
+      }
 
       history.push({
         pathname: '/results',
@@ -49,7 +51,7 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
           setLocalKeyword(e.target.value)
         }}
         id="keyword"
-        value={localKeyword !== null ? localKeyword : keyword} 
+        value={localKeyword} 
         placeholder="Type to search..." 
         aria-controls="resultsListing"
       />

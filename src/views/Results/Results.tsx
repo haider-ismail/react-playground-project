@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useCallback, useContext } from 'react';
+import React, { Suspense, useEffect, useContext } from 'react';
 
 // contexts
 import { ResultsStoreContext } from "../../contexts/resultsStoreContext";
