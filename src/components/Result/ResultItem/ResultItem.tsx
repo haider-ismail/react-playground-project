@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { IMovie } from '../../../types/types';
 
 // contexts
-import { ResultsContext } from "../../../contexts/resultsStoreContext";
+import { ResultsStoreContext } from "../../../contexts/resultsStoreContext";
 
 interface IProps {
   item: IMovie;
@@ -10,7 +10,7 @@ interface IProps {
 }
 
 const ResultItemCard: React.FC<IProps> = ({ item, clickHandler }) => {
-  const  { updateSelectedItem } = useContext(ResultsContext);
+  const  { updateSelectedItem } = useContext(ResultsStoreContext);
 
   const handeClick = () => {
     updateSelectedItem(item)

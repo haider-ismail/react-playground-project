@@ -104,10 +104,14 @@ export const useResultsStore = () => {
   }
 
   const updateSelectedItem = async (item: IMovie) => {
+    console.log('updateSelectedItem: item:', item);
     setSelectedItem(null)
+  
     if (!item.imdbID) return
 
-    await getFullDetails(item.imdbID)
+    const selectedItemDetails = await getFullDetails(item.imdbID)  
+    
+    setSelectedItem(selectedItemDetails)
   }
 
   const doSearch = async () => {
@@ -163,14 +167,9 @@ export const useResultsStore = () => {
     try {
       const response = await fetchFullProgrammeDetails(id)
       
-      if (_get(response, 'data')) {
-        setSelectedItem(_get(response, 'data'))
-      } else {
-        setSelectedItem(null)
-      }
+      return response
     } catch (e) {
       console.error(e);
-      setSelectedItem(null)
     }
   }
 

@@ -1,10 +1,8 @@
 import React, { Suspense, useEffect, useCallback, useContext } from 'react';
 
-// hooks
-import { useStores } from '../../hooks/useStores'
-
 // contexts
-import { ResultsContext } from "../../contexts/resultsStoreContext";
+import { ResultsStoreContext } from "../../contexts/resultsStoreContext";
+import { UIStoreContext } from "../../contexts/uiStoreContext";
 
 // components
 import ResultListingHeader from '../../components/Result/ResultListingHeader';
@@ -17,10 +15,9 @@ const ResultListing = React.lazy(() => import('../../components/Result/ResultLis
 interface IProps {}
 
 const Results: React.FunctionComponent<IProps> = () => {
-  const { uiStore  } = useStores()
-  const { resultModalOpen } = uiStore
 
-  const  { keyword, loading, errorMessage, selectedItem, recommendedListing, paginatedResults, getSearchTerms, setParams } = useContext(ResultsContext);
+  const  { isResultModalOpen, toggleResultModal } = useContext(UIStoreContext);
+  const  { keyword, loading, errorMessage, selectedItem, recommendedListing, paginatedResults, getSearchTerms, setParams } = useContext(ResultsStoreContext);
 
   useEffect(() => {
     console.log('%c Results.tsx [useEffect] -->', 'color: yellow;, ', ', keyword:', keyword);
@@ -29,13 +26,13 @@ const Results: React.FunctionComponent<IProps> = () => {
   }, [keyword])
 
   const openModal = () => {
-    if(uiStore) uiStore.toggleModal()
+    toggleResultModal(true)
   }
   
   return (
     <main className="home">
       
-      {resultModalOpen && <Modal>
+      {isResultModalOpen && <Modal>
         <Suspense fallback={
           <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
             <h2 className="text-white text-2xl mb-4">Loading information</h2>

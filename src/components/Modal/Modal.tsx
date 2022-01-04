@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
-import get from 'lodash/get';
 
-import { useStores } from '../../hooks/useStores'
+// contexts
+import { UIStoreContext } from "../../contexts/uiStoreContext";
 
 import './Modal.scss';
 
@@ -11,17 +11,17 @@ interface IProps {
 }
 
 const ModalFC: React.FunctionComponent<IProps> = ( { children }) => {
-  const { uiStore } = useStores()
-
+  const  { isResultModalOpen, toggleResultModal } = useContext(UIStoreContext);
+  
   const closeModal = (e: React.MouseEvent<HTMLButtonElement> ) => {
-    if(uiStore) uiStore.toggleModal()
+    toggleResultModal(false)
   }
 
   // Using portal to render the modal in the document.body
   return ReactDOM.createPortal(
     <Modal
     appElement={document.getElementById('root') as HTMLElement}
-    isOpen={get(uiStore, 'resultModalOpen', false) }
+    isOpen={ isResultModalOpen }
     className="modal p-10 max-w-full mx-10 w-full max-w-screen-xs sm:max-w-screen-sm md:max-w-screen-md mx-auto overflow-y-scroll rounded-md"
     shouldCloseOnEsc={true}
     shouldCloseOnOverlayClick={true}>

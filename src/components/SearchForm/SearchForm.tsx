@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, useRef, FormEvent } from 'react
 import history from '../../history';
 
 // contexts
-import { ResultsContext } from "../../contexts/resultsStoreContext";
+import { ResultsStoreContext } from "../../contexts/resultsStoreContext";
 
 import './SearchForm.scss';
 
@@ -12,7 +12,7 @@ interface IProps {
 }
 
 const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => { 
-  const  { keyword, updateKeyword } = useContext(ResultsContext);
+  const  { keyword, updateKeyword } = useContext(ResultsStoreContext);
   const [localKeyword, setLocalKeyword] = useState<string|null>(null)
   const firstUpdate = useRef(true);
 

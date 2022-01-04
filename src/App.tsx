@@ -4,11 +4,13 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './styles/tailwind.output.css';
 
 // contexts
-import { ResultsContext } from "./contexts/resultsStoreContext";
+import { ResultsStoreContext } from "./contexts/resultsStoreContext";
+import { UIStoreContext } from "./contexts/uiStoreContext";
 
 
 // hooks
 import { useResultsStore } from "./hooks/useResultsStore";
+import { useUIStore } from "./hooks/useUIStore";
 
 // components
 import Home from './views/Home/Home';
@@ -17,19 +19,21 @@ import Header from './components/Header';
 
 const App: React.FunctionComponent = () => {
   const resultsStoreData = useResultsStore();
+  const uiStoreData = useUIStore();
   
   return (
     <React.StrictMode>
-      
+        <UIStoreContext.Provider value={ uiStoreData }>
         <Router>
           <Header />
           <Switch>
-            <ResultsContext.Provider value={ resultsStoreData }>
+            <ResultsStoreContext.Provider value={ resultsStoreData }>
               <Route path="/" exact={true} component={Home} />
               <Route path="/results" component={Results} />
-            </ResultsContext.Provider>
+            </ResultsStoreContext.Provider>
           </Switch>
         </Router>
+        </UIStoreContext.Provider>
      
     </React.StrictMode>
   );

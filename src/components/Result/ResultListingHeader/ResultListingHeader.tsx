@@ -1,13 +1,13 @@
 import React, { useContext }  from 'react';
 
 // contexts
-import { ResultsContext } from "../../../contexts/resultsStoreContext";
+import { ResultsStoreContext } from "../../../contexts/resultsStoreContext";
 
 interface IProps {
 }
 
 const ResultListingHeader: React.FC<IProps> = () => {
-  const  { keyword, paginatedResults, results, getCurrentPage, incrementPage, decrementPage, getTotalPages} = useContext(ResultsContext);
+  const  { keyword, paginatedResults, results, getCurrentPage, incrementPage, decrementPage, getTotalPages} = useContext(ResultsStoreContext);
 
   const showNextPage = () => {
     incrementPage()

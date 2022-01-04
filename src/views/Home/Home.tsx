@@ -5,7 +5,7 @@ import { History } from "history";
 import SearchForm from '../../components/SearchForm'
 
 // contexts
-import { ResultsContext } from "../../contexts/resultsStoreContext";
+import { ResultsStoreContext } from "../../contexts/resultsStoreContext";
 
 interface IProps {
   history: History
@@ -13,7 +13,7 @@ interface IProps {
 
 const Home: React.FunctionComponent<IProps> = ( { history } ) => {
 
-  const  { keyword } = useContext(ResultsContext);
+  const  { keyword } = useContext(ResultsStoreContext);
 
   const handleFormSubmit = () => {
     console.log('Home.tsx [handleFormSubmit] -->');
