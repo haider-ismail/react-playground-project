@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { observer } from 'mobx-react-lite';
 import { IMovie } from '../../../types/types';
 
 // contexts
@@ -32,4 +31,4 @@ const ResultItemCard: React.FC<IProps> = ({ item, clickHandler }) => {
   </article>
 )};
 
-export default observer(ResultItemCard);
+export default ResultItemCard;

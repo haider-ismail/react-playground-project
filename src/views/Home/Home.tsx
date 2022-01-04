@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
 
-import { observer } from 'mobx-react-lite';
-
 import { History } from "history";
 
 import SearchForm from '../../components/SearchForm'
@@ -40,4 +38,4 @@ const Home: React.FunctionComponent<IProps> = ( { history } ) => {
 
 };
 
-export default observer(Home);
+export default Home;

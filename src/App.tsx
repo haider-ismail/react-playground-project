@@ -20,15 +20,17 @@ const App: React.FunctionComponent = () => {
   
   return (
     <React.StrictMode>
-      <ResultsContext.Provider value={ resultsStoreData }>
+      
         <Router>
           <Header />
           <Switch>
+            <ResultsContext.Provider value={ resultsStoreData }>
               <Route path="/" exact={true} component={Home} />
               <Route path="/results" component={Results} />
+            </ResultsContext.Provider>
           </Switch>
         </Router>
-      </ResultsContext.Provider>
+     
     </React.StrictMode>
   );
 };

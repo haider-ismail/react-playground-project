@@ -23,10 +23,12 @@ export const useResultsStore = () => {
   const [queryParams, setQueryParams] = useState<IQueryParams>({})
 
   useEffect(() => {
-    console.log('%c useResultsStore [useEffect] -->', 'color: yellow;');
-    
+    console.log('%c useResultsStore [useEffect] -->', 'useResultsStore [useEffect] --> recommendedListing.length', recommendedListing.length, 'color: yellow;');
+    // console.log('useResultsStore [useEffect] --> recommendedListing.length', recommendedListing.length);
     updatePaginatedResults()
-  }, [results, currentPageIndex])
+
+    if (_isEmpty(queryParams) && !recommendedListing.length) getRecommended()
+  }, [results, recommendedListing, currentPageIndex])
 
 
   const getQueryParamsString = () => {
@@ -66,8 +68,7 @@ export const useResultsStore = () => {
   }
 
   const setParams = async (search: boolean = false) => {
-
-    console.log('setParams');
+    console.log('[setParams] --> search:', search);
     
     let params: any = {}
 
@@ -78,10 +79,6 @@ export const useResultsStore = () => {
     setQueryParams(params)
     
     if (search && !_isEmpty(params)) await doSearch()
-    if (_isEmpty(params)) {
-      resetResults()
-      if (!recommendedListing.length) await getRecommended()
-    } 
   }
 
   const incrementPage = () => {
@@ -114,6 +111,8 @@ export const useResultsStore = () => {
   }
 
   const doSearch = async () => {
+    console.log('[doSearch] -->');
+    
     resetResults()
 
     setLoadingState(true)
@@ -122,12 +121,9 @@ export const useResultsStore = () => {
       const response = await fetchResults(keyword);
       
       if (_get(response, 'data.Search')) {
-        const results = _get(response, 'data.Search', [])
-        // console.log('setResults', _get(response, 'data.Search', []), ', results.length:', results.length, ', perPAge:', perPage);
+        setResults(_get(response, 'data.Search', []));
 
-        setResults(results);
-
-        setTotalPages(Math.abs(results.length / perPage))
+        setTotalPages(Math.abs(_get(response, 'data.Search', []).length / perPage))
       } else {
         if (_get(response, 'data.Error')) setErrorMessage(_get(response, 'data.Error'))
         setResults([])
@@ -149,9 +145,9 @@ export const useResultsStore = () => {
     
     try {
       const response = await fetchRecommended()
-        
-      if (response.length) {
-        setRecommendedListing(response)
+
+      if (_get(response, 'data.Search', []).length) {
+        setRecommendedListing( _get(response, 'data.Search', []))
       } else {
         setRecommendedListing([])
       }
@@ -182,10 +178,8 @@ export const useResultsStore = () => {
    * Gets search terms from url query. Runs on component mount and update
   */
   const getSearchTerms = () => {
-
     const searchTerms = queryString.parse(window.location.search)
     console.log('[getSearchTerms] --> searchTerms', searchTerms);
-    
       
     setSearchTerms(searchTerms);
   }
@@ -200,7 +194,6 @@ export const useResultsStore = () => {
         updateKeyword(key)
       }
     })
-    setParams(true)
   }  
 
 
@@ -214,6 +207,7 @@ export const useResultsStore = () => {
     recommendedListing,
     queryParams,
     setResults,
+    setParams,
     updateKeyword,
     getQueryParamsString,
     doSearch,

@@ -29,6 +29,7 @@ export interface ResultsStoreContextType {
   paginatedResults: IMovie[];
   setResults: () => Array<string>;
   setKeyword: () => Array<string>;
+  setParams: () => Array<string>;
   updateKeyword: () => Array<string>;
   doSearch: () => Array<string>;
   getPaginatedResults: () => Array<string>;

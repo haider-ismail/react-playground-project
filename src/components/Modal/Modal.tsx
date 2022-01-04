@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
-import { observer } from 'mobx-react-lite';
 import get from 'lodash/get';
 
 import { useStores } from '../../hooks/useStores'
@@ -34,4 +33,4 @@ const ModalFC: React.FunctionComponent<IProps> = ( { children }) => {
   )
 };
 
-export default observer(ModalFC);
+export default ModalFC;

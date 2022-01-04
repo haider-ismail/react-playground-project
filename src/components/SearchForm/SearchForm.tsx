@@ -1,12 +1,8 @@
 import React, { useContext, useState, useEffect, useRef, FormEvent } from 'react';
-import { observer } from 'mobx-react-lite';
 import history from '../../history';
 
 // contexts
 import { ResultsContext } from "../../contexts/resultsStoreContext";
-
-// hooks 
-import useCurrentPath from '../../hooks/currentPath'
 
 import './SearchForm.scss';
 
@@ -16,12 +12,11 @@ interface IProps {
 }
 
 const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => { 
-  const  { keyword, updateKeyword, getQueryParamsString } = useContext(ResultsContext);
-  const currentPath = useCurrentPath()
-  const [localKeyword, setLocalKeyword] = useState<string>('')
+  const  { keyword, updateKeyword } = useContext(ResultsContext);
+  const [localKeyword, setLocalKeyword] = useState<string|null>(null)
   const firstUpdate = useRef(true);
 
-  const handleSubmit = (e: FormEvent) =>  {
+  const handleSubmit = async (e: FormEvent) =>  {
     if(e) e.preventDefault()
 
     if (submitHandler) submitHandler()
@@ -34,15 +29,12 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
       // Skip for first render 
       if (firstUpdate.current) return firstUpdate.current = false;
 
-      (currentPath === '/results'  ? updateKeyword(localKeyword as string, true) :  updateKeyword(localKeyword as string, false))
-
-      console.log('keyword', keyword);
-      console.log('getQueryParamsString:', getQueryParamsString());
-
       history.push({
         pathname: '/results',
         search: `?keyword=${localKeyword}`
       })
+
+      updateKeyword(localKeyword as string);
     }, 500)
     return () => clearTimeout(typingTimeoutId)
   }, [localKeyword, keyword])
@@ -55,7 +47,7 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
           setLocalKeyword(e.target.value)
         }}
         id="keyword"
-        value={(localKeyword !== '' ? localKeyword : keyword)} 
+        value={localKeyword !== null ? localKeyword : keyword} 
         placeholder="Type to search..." 
         aria-controls="resultsListing"
       />
@@ -65,4 +57,4 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
   );
 }
 
-export default observer(SearchForm);
+export default SearchForm;

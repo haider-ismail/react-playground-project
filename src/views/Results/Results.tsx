@@ -1,6 +1,4 @@
-import React, { Suspense, useEffect, useContext } from 'react';
-
-import { observer } from 'mobx-react-lite';
+import React, { Suspense, useEffect, useCallback, useContext } from 'react';
 
 // hooks
 import { useStores } from '../../hooks/useStores'
@@ -22,11 +20,12 @@ const Results: React.FunctionComponent<IProps> = () => {
   const { uiStore  } = useStores()
   const { resultModalOpen } = uiStore
 
-  const  { keyword, loading, errorMessage, selectedItem, recommendedListing, paginatedResults, getSearchTerms } = useContext(ResultsContext);
+  const  { keyword, loading, errorMessage, selectedItem, recommendedListing, paginatedResults, getSearchTerms, setParams } = useContext(ResultsContext);
 
   useEffect(() => {
-    console.log('%c Results.tsx [useEffect] -->', 'color: yellow;');
-    getSearchTerms()    
+    console.log('%c Results.tsx [useEffect] -->', 'color: yellow;, ', ', keyword:', keyword);
+    getSearchTerms()
+    setParams(true) 
   }, [keyword])
 
   const openModal = () => {
@@ -79,4 +78,4 @@ const Results: React.FunctionComponent<IProps> = () => {
   )
 };
 
-export default  observer(Results);
+export default Results;
