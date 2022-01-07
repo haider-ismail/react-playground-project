@@ -4,7 +4,9 @@ import axios from 'axios';
 
 export const fetchResults = async (keyword: string = '') => {
   try {
-    const response = await axios.get(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=${keyword}`);
+    const response = await axios.get(`http://localhost:3001/api/v1/movies/${keyword}`);
+    // const response = await axios.get(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=${keyword}`);
+    
     return response
   } catch (e) {
     console.error(e);

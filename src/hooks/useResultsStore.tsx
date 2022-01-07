@@ -116,12 +116,13 @@ export const useResultsStore = () => {
     try {
       const response = await fetchResults(keyword);
       
-      if (_get(response, 'data.Search')) {
+      
+      if (_get(response, 'data.Search').length) {
         setResults(_get(response, 'data.Search', []));
 
         setTotalPages(Math.abs(_get(response, 'data.Search', []).length / perPage))
       } else {
-        if (_get(response, 'data.Error')) setErrorMessage(_get(response, 'data.Error'))
+        setErrorMessage(_get(response, 'data.Error.Error'))
         setResults([])
       }
 
