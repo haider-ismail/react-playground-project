@@ -1,14 +1,9 @@
 import React, { useContext, useState, useEffect, useRef, FormEvent } from 'react';
 import { Link } from "react-router-dom";
 import history from '../../history';
-import { History } from 'history';
-
-// components
-import LinkButton from '../LinkButton';
 
 // contexts
 import { ResultsStoreContext } from "../../contexts/resultsStoreContext";
-
 
 // hooks
 import useCurrentPath from '../../hooks/currentPath'
