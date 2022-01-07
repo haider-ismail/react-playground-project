@@ -1,29 +1,9 @@
-import React, { useContext } from 'react';
-
-import { History } from "history";
+import React from 'react';
 
 import SearchForm from '../../components/SearchForm'
 
-// contexts
-import { ResultsStoreContext } from "../../contexts/resultsStoreContext";
-
-interface IProps {
-  history: History
-}
-
-const Home: React.FunctionComponent<IProps> = ( { history } ) => {
-
-  const  { keyword } = useContext(ResultsStoreContext);
-
-  const handleFormSubmit = () => {
-    console.log('Home.tsx [handleFormSubmit] -->');
-    
-    history.push({
-      pathname: '/results',
-      search: `?keyword=${keyword}`
-    })
-  }
-
+const Home: React.FunctionComponent = ( ) => {
+  const handleFormSubmit = () => { }
 
   return (
     <main className="home">

@@ -1,8 +1,17 @@
 import React, { useContext, useState, useEffect, useRef, FormEvent } from 'react';
+import { Link } from "react-router-dom";
 import history from '../../history';
+import { History } from 'history';
+
+// components
+import LinkButton from '../LinkButton';
 
 // contexts
 import { ResultsStoreContext } from "../../contexts/resultsStoreContext";
+
+
+// hooks
+import useCurrentPath from '../../hooks/currentPath'
 
 import './SearchForm.scss';
 
@@ -13,7 +22,7 @@ interface IProps {
 
 const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => { 
   const  { keyword, setKeyword } = useContext(ResultsStoreContext);
-
+  const currentPath = useCurrentPath()
 
   const [localKeyword, setLocalKeyword] = useState<string>('')
   const firstUpdate = useRef(true);
@@ -33,14 +42,19 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
         return firstUpdate.current = false;
       }
 
-      history.push({
-        pathname: '/results',
-        search: `?keyword=${localKeyword}`
-      })
-
       setKeyword(localKeyword as string);
+
+      if (currentPath === '/results') {
+        history.push({
+          pathname: '/results',
+          search: `?keyword=${localKeyword}`
+        })
+      }
+
+      
     }, 500)
     return () => clearTimeout(typingTimeoutId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localKeyword, keyword])
   
   return (
@@ -56,7 +70,7 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
         aria-controls="resultsListing"
       />
 
-      { submitHandler && <button type="submit" className="bg-white p-4 text-black">Search</button> }
+      { submitHandler && <Link to={`/results?keyword=${localKeyword}`} className="bg-white p-4 text-black">Search</Link> }
     </form>     
   );
 }

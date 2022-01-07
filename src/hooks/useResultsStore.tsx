@@ -27,7 +27,7 @@ export const useResultsStore = () => {
     updatePaginatedResults()
 
     if (_isEmpty(queryParams) && !recommendedListing.length) getRecommended()
-    // @ts-ignore
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results, recommendedListing, currentPageIndex])
 
 

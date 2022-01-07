@@ -40,3 +40,4 @@ export interface ResultsStoreContextType {
   // decrementPage: () => void;
   // getTotalPages: () => number;
 };
+

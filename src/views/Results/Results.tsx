@@ -23,6 +23,7 @@ const Results: React.FunctionComponent<IProps> = () => {
     console.log('%c Results.tsx [useEffect] -->', 'color: yellow;, ', ', keyword:', keyword);
     getSearchTerms()
     setParams(true) 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword])
 
   const openModal = () => {
