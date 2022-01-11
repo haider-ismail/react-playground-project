@@ -117,10 +117,10 @@ export const useResultsStore = () => {
       const response = await fetchResults(keyword);
       
       
-      if (_get(response, 'data.Search').length) {
-        setResults(_get(response, 'data.Search', []));
+      if (_get(response, 'data.movies').length) {
+        setResults(_get(response, 'data.movies', []));
 
-        setTotalPages(Math.abs(_get(response, 'data.Search', []).length / perPage))
+        setTotalPages(Math.abs(_get(response, 'data.movies', []).length / perPage))
       } else {
         setErrorMessage(_get(response, 'data.Error.Error'))
         setResults([])
@@ -143,8 +143,8 @@ export const useResultsStore = () => {
     try {
       const response = await fetchRecommended()
 
-      if (_get(response, 'data.Search', []).length) {
-        setRecommendedListing( _get(response, 'data.Search', []))
+      if (_get(response, 'data.movies', []).length) {
+        setRecommendedListing( _get(response, 'data.movies', []))
       } else {
         setRecommendedListing([])
       }

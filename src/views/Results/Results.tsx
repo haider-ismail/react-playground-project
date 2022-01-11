@@ -44,33 +44,39 @@ const Results: React.FunctionComponent<IProps> = () => {
       </Modal>}
 
       <section className="container mx-auto">
-        {
+        {/* {
 
           <Suspense fallback={
             <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md">
               <h2 className="text-white text-2xl mb-4">Fetching results</h2>
               <ResultListingPlaceholder />
-            </div>}>
+            </div>}> */}
 
             { keyword && !loading && (paginatedResults && paginatedResults.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 mb-8 rounded-md text-white text-center">
               <h3 className="text-2xl mb-4">No results matching "{keyword}" found</h3>
               { errorMessage && <p className="text-lg">{errorMessage}</p> }
             </div> }
 
+
+            <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md">
+              {/* <ResultListingHeader /> */}
+              <ResultListing clickHandler={() => openModal()} />
+            </div>
+{/* 
             {  keyword && (paginatedResults && paginatedResults.length > 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md">
               <ResultListingHeader />
               <ResultListing resultItems={ paginatedResults } clickHandler={() => openModal()} />
-            </div>}
+            </div>} */}
 
-            { !keyword && (paginatedResults && paginatedResults.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
+            {/* { !keyword && (paginatedResults && paginatedResults.length === 0) && <div className="results-listing__container bg-gray-800 px-6 py-8 rounded-md text-white text-center">
               <div className="results-listing__header flex flex-wrap justify-between items-center text-white font-bold">
                 <h2 className="text-3xl">Recommended</h2>
               </div>
 
               <ResultListing resultItems={recommendedListing}  clickHandler={() => openModal()} />
-            </div> }
-          </Suspense>
-        }
+            </div> } */}
+          {/* </Suspense>
+        } */}
       </section>
     </main>
   )

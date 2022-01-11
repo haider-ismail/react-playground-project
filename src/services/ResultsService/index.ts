@@ -4,8 +4,35 @@ import axios from 'axios';
 
 export const fetchResults = async (keyword: string = '') => {
   try {
-    const response = await axios.get(`http://localhost:3001/api/v1/movies/${keyword}`);
+    // const response = await axios.get(`http://localhost:3001/api/v1/movies/${keyword}`);
     // const response = await axios.get(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=${keyword}`);
+
+    const response = await fetch('http://localhost:3001/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({query: `
+        { 
+          movies(Keyword: "${keyword}") { Title } 
+        }
+      `})
+    })
+      .then(r => r.json())
+      .then(data => data);
+      
+    //   axios.post('http://localhost:3001/graphql', {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Accept': 'application/json',
+    //   },
+    //   body: JSON.stringify({query: `
+    //     { 
+    //       movies(Keyword: "${keyword}") { Title } 
+    //     }
+    //   `})
+    // })
     
     return response
   } catch (e) {

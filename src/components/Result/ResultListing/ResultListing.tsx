@@ -1,20 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { IMovie } from '../../../types/types';
+
+// contexts
+import { ResultsStoreContext } from "../../../contexts/resultsStoreContext";
 
 import ResultItem from '../ResultItem';
 
 interface IProps {
-  resultItems: IMovie[];
   clickHandler: () => void;
 }
 
-const ResultListing: React.FC<IProps> = ({ resultItems, clickHandler }) => { 
+const ResultListing: React.FC<IProps> = ({ clickHandler }) => { 
+  const  { paginatedResults } = useContext(ResultsStoreContext);
+
   const handleClick = () => clickHandler()
   return (
-    resultItems && 
+    paginatedResults && 
       <div className="results-listing py-8 grid gap-5 grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2" id="resultsListing" aria-live="polite">
-        { resultItems.map((item: any) => <ResultItem clickHandler={() => handleClick()} item={item} key={`${item.imdbID}_${item.Year}`} />) }
+        { paginatedResults.map((item: any) => <ResultItem clickHandler={() => handleClick()} item={item} key={`${item.imdbID}_${item.Year}`} />) }
       </div>
   )
 }
