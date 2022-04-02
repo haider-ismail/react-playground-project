@@ -2,21 +2,17 @@ import React, { useContext, useState, useEffect, useRef, FormEvent } from 'react
 import { Link } from "react-router-dom";
 import history from '../../history';
 
-// contexts
-import { ResultsStoreContext } from "../../contexts/resultsStoreContext";
-
-// hooks
+// Helpers
+import { ResultsContext } from "../../views/Results/context/result.context"
 import useCurrentPath from '../../hooks/currentPath'
-
 import './SearchForm.scss';
-
 interface IProps {
   submitHandler?: () => void;
   cssClasses?: string;
 }
 
 const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => { 
-  const  { keyword, setKeyword } = useContext(ResultsStoreContext);
+  const  { keyword, setKeyword } = useContext(ResultsContext);
   const currentPath = useCurrentPath()
 
   const [localKeyword, setLocalKeyword] = useState<string>('')
@@ -34,10 +30,10 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
       // Skip for first render 
       if (firstUpdate.current) { 
         if (keyword) setLocalKeyword(keyword)
-        return firstUpdate.current = false;
+        return firstUpdate.current = false
       }
 
-      setKeyword(localKeyword as string);
+      setKeyword(localKeyword as string)
 
       if (currentPath === '/results') {
         history.push({
@@ -45,8 +41,6 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
           search: `?keyword=${localKeyword}`
         })
       }
-
-      
     }, 500)
     return () => clearTimeout(typingTimeoutId)
     // eslint-disable-next-line react-hooks/exhaustive-deps

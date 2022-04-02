@@ -1,5 +1,5 @@
-import _get from 'lodash/get';
-import axios from 'axios';
+import _get from 'lodash/get'
+import axios from 'axios'
 
 
 export const fetchResults = async (keyword: string = '') => {
@@ -15,12 +15,12 @@ export const fetchResults = async (keyword: string = '') => {
       },
       body: JSON.stringify({query: `
         { 
-          movies(Keyword: "${keyword}") { Title } 
+          movies(Keyword: "${keyword}") { Title, Poster, imdbID } 
         }
       `})
     })
       .then(r => r.json())
-      .then(data => data);
+      .then(data => data)
       
     //   axios.post('http://localhost:3001/graphql', {
     //   headers: {
@@ -40,22 +40,11 @@ export const fetchResults = async (keyword: string = '') => {
   }
 }
 
-export const fetchRecommended = async () => {
-  try {
-    const response = await axios.get(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=christmas`)
-    return response
-  } catch (e) {
-    console.error(e);
-    return []
-  }
-}
-
-
 export const fetchFullProgrammeDetails = async (id: string|null = null) => {
   if (!id) return
 
   try {
-    const response = await axios.get(`http://www.omdbapi.com/?apikey=6f575f76&&i=${id}`);
+    const response = await axios.get(`http://www.omdbapi.com/?apikey=6f575f76&&i=${id}`)
     
     if (_get(response, 'data')) {
       return _get(response, 'data')
@@ -63,7 +52,7 @@ export const fetchFullProgrammeDetails = async (id: string|null = null) => {
       return null
     }
   } catch (e) {
-    console.error(e);
+    console.error(e)
     return null
   }
 }

@@ -5,8 +5,7 @@ interface IProps {
   selectedItem: IMovie | null;
 }
 
-const ResultItemModalContent: React.FC<IProps> = ({ selectedItem }) => {
-  return (
+const ResultItemModalContent: React.FC<IProps> = ({ selectedItem }) => (
     <>
     <div className="flex flex-wrap w-full">
       <div className="w-full sm:w-1/3 mb-8 sm:mb-0">
@@ -23,6 +22,6 @@ const ResultItemModalContent: React.FC<IProps> = ({ selectedItem }) => {
       </div>
     </div>
     </>
-)};
+)
 
 export default ResultItemModalContent;

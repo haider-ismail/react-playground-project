@@ -1,13 +1,10 @@
 import React, { useContext }  from 'react';
 
-// contexts
-import { ResultsStoreContext } from "../../../contexts/resultsStoreContext";
+// Components
+import { ResultsContext } from "../../../views/Results/context/result.context"
 
-interface IProps {
-}
-
-const ResultListingHeader: React.FC<IProps> = () => {
-  const  { keyword, paginatedResults, results, getCurrentPage, incrementPage, decrementPage, getTotalPages} = useContext(ResultsStoreContext);
+const ResultListingHeader: React.FC = () => {
+  const { keyword, paginatedResults, results, getCurrentPage, incrementPage, decrementPage, getTotalPages} = useContext(ResultsContext)
 
   const showNextPage = () => {
     incrementPage()
@@ -21,7 +18,7 @@ const ResultListingHeader: React.FC<IProps> = () => {
     <>
     <h2 className="text-3xl text-white">Search results</h2>
     <div className="results-listing__header flex flex-wrap justify-between items-center text-white font-bold">
-      <div className="w-full sm:w-auto mb-6 sm:mb-0" >{ results.length } Results found for "{ keyword }"</div>
+      <div className="w-full sm:w-auto mb-6 sm:mb-0" >{ results?.length } Results found for "{ keyword }"</div>
 
       <div className="flex items-center">
         <span className="text-lg">Page { getCurrentPage() } of { getTotalPages() }</span>

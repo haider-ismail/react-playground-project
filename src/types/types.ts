@@ -13,31 +13,41 @@ export interface IMovie {
 export interface IQueryParams {
   keyword?: string;
 }
-
-export interface ResultsStoreContextType {
-  // keyword: string;
-  // selectedItem: IMovie | null;
-  // loading: boolean;
-  // searched: boolean ;
-  // errorMessage: string | null;
-  // perPage: Number;
-  // currentPageIndex: Number;
-  // totalPages: Number;
-  // queryParams: IQueryParams;
-  // recommendedListing: IMovie[];
-  // results: IMovie[];
-  // paginatedResults: IMovie[];
-  // setResults: () => Array<string>;
-  // setKeyword: () => Array<string>;
-  // setParams: () => Array<string>;
-  // updateKeyword: () => Array<string>;
-  // doSearch: () => Array<string>;
-  // getPaginatedResults: () => Array<string>;
-  // getSearchTerms: () => Array<string>;
-  // updateSelectedItem: () => Array<string>;
-  // getCurrentPage: () => number;
-  // incrementPage: () => void;
-  // decrementPage: () => void;
-  // getTotalPages: () => number;
-};
-
+export interface IResultsState {
+  results: IMovie[],
+  paginatedResults: IMovie[],
+  recommendedListing: IMovie[],
+  keyword: string,
+  loading: boolean,
+  errorMessage: string | null,
+  selectedItem: IMovie | null,
+  perPage: number,
+  currentPageIndex: number,
+  totalPages: number,
+  queryParams: IQueryParams,
+  isResultModalOpen: boolean
+}
+export interface IResultsProvider {
+  results: IMovie[],
+  paginatedResults: IMovie[],
+  recommendedListing: IMovie[],
+  keyword: string,
+  loading: boolean,
+  errorMessage: string | null,
+  selectedItem: IMovie | null,
+  perPage: number,
+  currentPageIndex: number,
+  totalPages: number,
+  queryParams: IQueryParams,
+  isResultModalOpen: boolean,
+  getCurrentPage: () => number
+  getQueryParamsString: () => string
+  incrementPage: () => void
+  decrementPage: () => void
+  updateSelectedItem: (item: IMovie) => Promise<void>
+  setParams: (search: boolean) => Promise<void>
+  setKeyword: (keyword: string) => void
+  getSearchTerms: () => void
+  getTotalPages: () => number
+  setModalOpenState: (state: boolean) => void
+}

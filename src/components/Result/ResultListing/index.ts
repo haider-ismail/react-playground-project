@@ -1,3 +1,3 @@
-import SearchListing from './ResultListing'
+import ResultListing from './ResultListing'
 
-export default SearchListing
+export default ResultListing
