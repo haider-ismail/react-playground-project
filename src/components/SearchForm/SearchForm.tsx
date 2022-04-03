@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import history from '../../history';
 
 // Helpers
-import { ResultsContext } from "../../views/Results/context/result.context"
+import { ResultsContext } from "../../views/Results/context/results.context"
 import useCurrentPath from '../../hooks/currentPath'
 import './SearchForm.scss';
 interface IProps {
@@ -33,7 +33,7 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
         return firstUpdate.current = false
       }
 
-      setKeyword(localKeyword as string)
+      if (localKeyword !== keyword) setKeyword(localKeyword as string)
 
       if (currentPath === '/results') {
         history.push({

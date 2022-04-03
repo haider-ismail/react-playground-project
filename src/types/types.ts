@@ -24,7 +24,6 @@ export interface IResultsState {
   perPage: number,
   currentPageIndex: number,
   totalPages: number,
-  queryParams: IQueryParams,
   isResultModalOpen: boolean
 }
 export interface IResultsProvider {
@@ -38,16 +37,13 @@ export interface IResultsProvider {
   perPage: number,
   currentPageIndex: number,
   totalPages: number,
-  queryParams: IQueryParams,
   isResultModalOpen: boolean,
   getCurrentPage: () => number
   getQueryParamsString: () => string
   incrementPage: () => void
   decrementPage: () => void
   updateSelectedItem: (item: IMovie) => Promise<void>
-  setParams: (search: boolean) => Promise<void>
   setKeyword: (keyword: string) => void
-  getSearchTerms: () => void
   getTotalPages: () => number
   setModalOpenState: (state: boolean) => void
 }

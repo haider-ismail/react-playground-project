@@ -1,4 +1,4 @@
-import _get from 'lodash/get'
+import { get } from 'lodash'
 import axios from 'axios'
 
 
@@ -46,11 +46,8 @@ export const fetchFullProgrammeDetails = async (id: string|null = null) => {
   try {
     const response = await axios.get(`http://www.omdbapi.com/?apikey=6f575f76&&i=${id}`)
     
-    if (_get(response, 'data')) {
-      return _get(response, 'data')
-    } else {
-      return null
-    }
+    if (get(response, 'data')) return get(response, 'data')
+    return null
   } catch (e) {
     console.error(e)
     return null

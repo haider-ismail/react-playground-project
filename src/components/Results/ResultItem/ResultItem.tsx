@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { IMovie } from '../../../types/types';
 
 // Components
-import { ResultsContext } from "../../../views/Results/context/result.context"
+import { ResultsContext } from "../../../views/Results/context/results.context"
 interface IProps {
   item: IMovie;
   clickHandler: () => void;

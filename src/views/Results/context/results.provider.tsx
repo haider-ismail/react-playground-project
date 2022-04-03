@@ -1,5 +1,4 @@
-import React, { useEffect } from "react"
-import _forEach from 'lodash/forEach'
+import React, { useEffect, useReducer } from "react"
 import _get from 'lodash/get'
 import _isEmpty from 'lodash/isEmpty'
 import queryString from 'query-string'
@@ -12,51 +11,53 @@ import reducer from "./results.reducer"
 import { fetchFullProgrammeDetails, fetchResults } from '../../../services/ResultsService'
 
 // Components
-import { Provider } from "./result.context"
+import { Provider } from "./results.context"
 
 const ResultsProvider = ({ children }: any) => {
+  const searchTerms = queryString.parse(window.location.search)
 
   // State
   const [
-    { results, paginatedResults, recommendedListing, keyword, loading, errorMessage, selectedItem, perPage, currentPageIndex, totalPages, queryParams, isResultModalOpen },
+    { results, paginatedResults, recommendedListing, keyword, loading, errorMessage, selectedItem, perPage, currentPageIndex, totalPages, isResultModalOpen },
     dispatch
-  ]: any = React.useReducer(reducer, {
+  ]: any = useReducer(reducer, {
     results: [],
     paginatedResults: [],
     recommendedListing: [],
-    keyword: "",
+    keyword: searchTerms?.keyword,
     loading: false,
     errorMessage: null,
     selectedItem: null,
     perPage: 6,
     currentPageIndex: 0,
     totalPages: 0,
-    queryParams: {},
     isResultModalOpen: false,
   } as IResultsState)
 
+  useEffect(() => {
+    _isEmpty(keyword) && !loading && !recommendedListing.length ? getRecommended() : doSearch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keyword])
 
   useEffect(() => {
-    console.log('%c resultsProvider [useEffect] -->', 'color: yellow;');
+    console.log('%c useEffect [updatePaginatedResults] -->', 'color: yellow;');
     updatePaginatedResults()
-
-    if (_isEmpty(queryParams) && !recommendedListing.length) getRecommended()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [results, recommendedListing])
+  }, [results, currentPageIndex])
 
   const updatePaginatedResults = () => {
+    console.log("updatePaginatedResults results", results);
+
     const paginationOffset = Math.abs(currentPageIndex as any * perPage)
     const to = Math.abs(paginationOffset as any + perPage)
-
     const paginated = results.slice(paginationOffset, to)
-
-    console.log("paginated",paginated)
-    
 
     dispatch({ type: "UPDATE_VALUE", key: "paginatedResults", value: paginated })
   }
 
   const resetResults = () => {
+    console.log("resetResults");
+
     dispatch({ type: "UPDATE_VALUE", key: "results", value: [] })
     dispatch({ type: "UPDATE_VALUE", key: "currentPageIndex", value: 0 })
     dispatch({ type: "UPDATE_VALUE", key: "totalPages", value: 0 })
@@ -65,12 +66,12 @@ const ResultsProvider = ({ children }: any) => {
   const doSearch = async () => {
     console.log('[doSearch] -->');
 
-    resetResults()
+    if (results.length) resetResults()
 
     dispatch({ type: "UPDATE_VALUE", key: "loading", value: true })
 
     try {
-      const response = await fetchResults(keyword);
+      const response = await fetchResults(keyword)
 
       if (_get(response, 'data.movies').length) {
         dispatch({ type: "UPDATE_VALUE", key: "results", value: _get(response, 'data.movies', []) })
@@ -89,16 +90,22 @@ const ResultsProvider = ({ children }: any) => {
   }
 
   const getRecommended = async () => {
+    console.log("[getRecommended] -->")
+    dispatch({ type: "UPDATE_VALUE", key: "loading", value: true })
+
     try {
       const response = await fetchResults('christmas')
 
-      if (_get(response, 'data.movies', []).length) {
+      if (_get(response, 'data.movies', null)) {
         dispatch({ type: "UPDATE_VALUE", key: "recommendedListing", value: _get(response, 'data.movies', []) })
       } else {
         dispatch({ type: "UPDATE_VALUE", key: "recommendedListing", value: [] })
       }
+
+      dispatch({ type: "UPDATE_VALUE", key: "loading", value: false })
     } catch (e) {
       dispatch({ type: "UPDATE_VALUE", key: "recommendedListing", value: [] })
+      dispatch({ type: "UPDATE_VALUE", key: "loading", value: false })
     }
   }
 
@@ -115,18 +122,6 @@ const ResultsProvider = ({ children }: any) => {
     }
   }
 
-  /**
-   * Updates the store with the pased in query params 
-   * @param searchTerms 
-  */
-  const setSearchTerms = async (searchTerms: { [key: string]: any }) => {
-    _forEach(searchTerms, (key, value) => {
-      if (value === 'keyword') {
-        dispatch({ type: "UPDATE_VALUE", key: "keyword", value: key })
-      }
-    })
-  }
-
   return (
     <Provider
       value={{
@@ -140,20 +135,8 @@ const ResultsProvider = ({ children }: any) => {
         perPage,
         currentPageIndex,
         totalPages,
-        queryParams,
         isResultModalOpen,
         getCurrentPage: () => Math.abs(currentPageIndex as any + 1),
-        getQueryParamsString: () => {
-          let params: any = queryParams
-          let queryString = null
-          let queryParamsArr = Object.keys(params).map((key) => {
-            return (params[key] ? `${key}=${params[key]}` : null)
-          })
-
-          queryString = `${queryParamsArr.filter(filter => filter !== null).join('&')}`
-
-          return queryString
-        },
         incrementPage: () => {
           if (Math.abs(currentPageIndex as any + 1) > totalPages) return
 
@@ -173,26 +156,6 @@ const ResultsProvider = ({ children }: any) => {
           const selectedItemDetails = await getFullDetails(item.imdbID)
 
           dispatch({ type: "UPDATE_VALUE", key: "selectedItem", value: selectedItemDetails })
-        },
-        // Gets search terms from url query. Runs on component mount and update
-        getSearchTerms: () => {
-          const searchTerms = queryString.parse(window.location.search)
-          console.log('[getSearchTerms] --> searchTerms', searchTerms);
-
-          setSearchTerms(searchTerms);
-        },
-        setParams: async (search: boolean = false) => {
-          console.log('[setParams] --> search:', search);
-
-          let params: any = {}
-
-          if (keyword) {
-            params.keyword = keyword
-          }
-
-          dispatch({ type: "UPDATE_VALUE", key: "queryParams", value: params })
-
-          if (search && !_isEmpty(params)) await doSearch()
         },
         setKeyword: (keyword: string) => dispatch({ type: "UPDATE_VALUE", key: "keyword", value: keyword }),
         getTotalPages: () => Math.ceil(Math.abs(totalPages as any)),

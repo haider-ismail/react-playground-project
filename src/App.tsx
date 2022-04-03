@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './styles/tailwind.output.css'
 
 // Helpers
-import ResultsProvider from "./views/Results/context/result.provider"
+import ResultsProvider from "./views/Results/context/results.provider"
 
 // Components
 import Home from './views/Home/Home'
@@ -15,7 +15,7 @@ const Results = React.lazy(() => import('./views/Results/Results'))
 const App: React.FunctionComponent = () =>
 
 (
-  <React.StrictMode>
+  // <React.StrictMode>
       <ResultsProvider>
         <BrowserRouter>
           <Header />
@@ -32,7 +32,7 @@ const App: React.FunctionComponent = () =>
           </Routes>
         </BrowserRouter>
       </ResultsProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 )
 
 export default App;
