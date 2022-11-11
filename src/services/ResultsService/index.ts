@@ -1,6 +1,5 @@
-import { get } from 'lodash'
-import axios from 'axios'
-
+import { get } from 'lodash';
+import axios from 'axios';
 
 export const fetchResults = async (keyword: string = '') => {
   try {
@@ -11,45 +10,51 @@ export const fetchResults = async (keyword: string = '') => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
-      body: JSON.stringify({query: `
+      body: JSON.stringify({
+        query: `
         { 
-          movies(Keyword: "${keyword}") { Title, Poster, imdbID } 
+          jobs(Keyword: "${keyword}") { id, title, url, description, website, updated, image } 
         }
-      `})
+      `,
+      }),
     })
-      .then(r => r.json())
-      .then(data => data)
-      
+      .then((r) => r.json())
+      .then((data) => data);
+
     //   axios.post('http://localhost:3001/graphql', {
     //   headers: {
     //     'Content-Type': 'application/json',
     //     'Accept': 'application/json',
     //   },
     //   body: JSON.stringify({query: `
-    //     { 
-    //       movies(Keyword: "${keyword}") { Title } 
+    //     {
+    //       movies(Keyword: "${keyword}") { Title }
     //     }
     //   `})
     // })
-    
-    return response
+
+    console.log('fetchResults: res:', response);
+
+    return response;
   } catch (e) {
     console.error(e);
   }
-}
+};
 
-export const fetchFullProgrammeDetails = async (id: string|null = null) => {
-  if (!id) return
+export const fetchFullProgrammeDetails = async (id: string | null = null) => {
+  if (!id) return;
 
   try {
-    const response = await axios.get(`http://www.omdbapi.com/?apikey=6f575f76&&i=${id}`)
-    
-    if (get(response, 'data')) return get(response, 'data')
-    return null
+    const response = await axios.get(
+      `http://www.omdbapi.com/?apikey=6f575f76&&i=${id}`
+    );
+
+    if (get(response, 'data')) return get(response, 'data');
+    return null;
   } catch (e) {
-    console.error(e)
-    return null
+    console.error(e);
+    return null;
   }
-}
+};
