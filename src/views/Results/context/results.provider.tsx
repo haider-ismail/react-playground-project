@@ -50,9 +50,7 @@ const ResultsProvider = ({ children }: any) => {
   } as IResultsState);
 
   useEffect(() => {
-    _isEmpty(keyword) && !loading && !recommendedListing.length
-      ? getRecommended()
-      : doSearch();
+    if (!_isEmpty(keyword) && !loading) doSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword]);
 

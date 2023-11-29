@@ -3,13 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const { graphqlHTTP } = require('express-graphql');
 const { format, isBefore, isAfter, subDays } = require('date-fns');
-const {
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLList,
-  GraphQLNonNull,
-} = require('graphql');
+const { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLNonNull } = require('graphql');
 require('dotenv').config();
 
 const app = express();
@@ -45,8 +39,7 @@ const movies = [
     Year: '2014',
     imdbID: 'tt3390572',
     Type: 'movie',
-    Poster:
-      'https://m.media-amazon.com/images/M/MV5BMjA1NTEwMDMxMF5BMl5BanBnXkFtZTgwODkzMzI0MjE@._V1_SX300.jpg',
+    Poster: 'https://m.media-amazon.com/images/M/MV5BMjA1NTEwMDMxMF5BMl5BanBnXkFtZTgwODkzMzI0MjE@._V1_SX300.jpg',
   },
   {
     Title: 'Haider lebt - 1. April 2021',
@@ -166,10 +159,7 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         title: { type: GraphQLString },
       },
-      resolve: () => (jobs, args) =>
-        jobs.find(
-          (job) => job.title.includes(args.title) || job.title === args.title
-        ),
+      resolve: () => (jobs, args) => jobs.find((job) => job.title.includes(args.title) || job.title === args.title),
     },
   }),
 });
@@ -192,18 +182,14 @@ app.use(
   })
 );
 
-const fetchData = async (keyword = null) => {
-  const pages = 50;
-  let data = {
-    Search: [],
-  };
+const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 0) => {
+  const waitTime = exponentialTimeoutIndex * 25; 
 
-  // Loop over certain number of pages to get more results than the API allows at any one time
-  for (let index = 0; index < pages; index++) {
-    console.log('for: index:', index);
-    try {
-      const workableResponse = await fetch(
-        `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&remote=false&offset=${index +
+  return new Promise((resolve) => {
+    setTimeout(async() => {
+      console.log('for: index:', index + 1);
+      const response = await fetch(
+        `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&offset=${index +
           1}0`,
         {
           headers: {
@@ -211,34 +197,38 @@ const fetchData = async (keyword = null) => {
           },
         }
       )
-        .then((response) => response.json())
-        .then((response) => response);
 
-      // const response = await fetch(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=${keyword}&page=${index+1}`, {
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   }
-      // })
-      // .then(response => response.json())
-      // .then(response => response)
+      const data = await response.json();
+      resolve(data);
+    }, waitTime);
+  })
+}
 
-      // if (index === 0 && !response.Search) {
-      //   data.Error = response
-      //   break
-      // }
+const fetchData = async (keyword = null) => {
+  const MAX_PAGES = 500;
+  const MAX_DAYS_OLD = 30;
+  let data = {
+    Search: [],
+  };
+  let exponentialTimeoutIndex = 0
 
-      // data.Search = [...data.Search, ...response.Search]
-      // console.log('workableResponse:', workableResponse);
-      if (workableResponse?.jobs)
-        data.Search = [...data.Search, ...workableResponse.jobs];
+  // Loop over certain number of pages to get more results than the API allows at any one time
+  for (let index = 0; index <= MAX_PAGES; index++) {
+    exponentialTimeoutIndex = exponentialTimeoutIndex >= 50 ? 0 : exponentialTimeoutIndex
+    exponentialTimeoutIndex++
+
+    try {
+      const workableResponse = await makeApiCallWithBackoff(keyword, index, exponentialTimeoutIndex)
+
+      if (workableResponse?.jobs) data.Search = [...data.Search, ...workableResponse.jobs];
+
+      if (index + 1 > workableResponse?.totalSize) break;
     } catch (error) {}
   }
 
   // console.log('data.Search:', data.Search);
   data.Search = data.Search.filter(
-    (_) =>
-      _.employmentType === 'Contract' &&
-      isAfter(new Date(_.updated), subDays(new Date(), 30))
+    (_) => (_.employmentType === 'Contract' || _.description.includes('contract') || _.description.includes('freelance')) && isAfter(new Date(_.updated), subDays(new Date(), MAX_DAYS_OLD))
   ).sort((a, b) => {
     if (isBefore(new Date(a.updated), new Date(b.updated))) {
       return 1;
