@@ -41,7 +41,7 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
           search: `?keyword=${localKeyword}`
         })
       }
-    }, 500)
+    }, 2000)
     return () => clearTimeout(typingTimeoutId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localKeyword, keyword])

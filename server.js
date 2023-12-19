@@ -187,7 +187,6 @@ const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 
 
   return new Promise((resolve) => {
     setTimeout(async() => {
-      console.log('for: index:', index + 1);
       const response = await fetch(
         `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&offset=${index +
           1}0`,
@@ -205,26 +204,42 @@ const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 
 }
 
 const fetchData = async (keyword = null) => {
-  const MAX_PAGES = 500;
-  const MAX_DAYS_OLD = 30;
+  const MAX_PAGES = 50;
+  const MAX_DAYS_OLD = 14;
   let data = {
     Search: [],
+    totalItems: 0
   };
   let exponentialTimeoutIndex = 0
 
-  // Loop over certain number of pages to get more results than the API allows at any one time
-  for (let index = 0; index <= MAX_PAGES; index++) {
-    exponentialTimeoutIndex = exponentialTimeoutIndex >= 50 ? 0 : exponentialTimeoutIndex
-    exponentialTimeoutIndex++
+  const initialReq = await makeApiCallWithBackoff(keyword, 0, exponentialTimeoutIndex)
+  if (initialReq?.totalSize) {
+    data.totalItems = initialReq?.totalSize
 
-    try {
-      const workableResponse = await makeApiCallWithBackoff(keyword, index, exponentialTimeoutIndex)
+    const totalPages = data?.totalItems / 10
 
-      if (workableResponse?.jobs) data.Search = [...data.Search, ...workableResponse.jobs];
+    console.log('totalPages:', totalPages);
 
-      if (index + 1 > workableResponse?.totalSize) break;
-    } catch (error) {}
-  }
+    // Loop over certain number of pages to get more results than the API allows at any one time
+    for (let index = 0; index <= totalPages; index++) {
+      exponentialTimeoutIndex = exponentialTimeoutIndex >= 50 ? 0 : exponentialTimeoutIndex
+      exponentialTimeoutIndex++
+
+      try {
+      
+        console.log('for: index:', index, 'totalItems:', data.totalItems);
+        const workableResponse = await makeApiCallWithBackoff(keyword, index, exponentialTimeoutIndex)
+
+        if (workableResponse?.error === 'rate_limit') break;
+        if (workableResponse?.error === 'rate_limit') console.error('workable ERROR:', workableResponse?.error)
+
+        if (workableResponse?.jobs) data.Search = [...data.Search, ...workableResponse.jobs];
+        // if (!data?.totalItems) data.totalItems = workableResponse?.totalSize
+
+        if (index + 1 > data?.totalItems || data?.totalItems === 0) break;
+      } catch (error) {}
+    }
+  } 
 
   // console.log('data.Search:', data.Search);
   data.Search = data.Search.filter(
