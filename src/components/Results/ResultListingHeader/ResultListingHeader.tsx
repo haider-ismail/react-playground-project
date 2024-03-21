@@ -1,7 +1,7 @@
 import React, { useContext }  from 'react';
 
 // Components
-import { ResultsContext } from "../../../views/Results/context/result.context"
+import { ResultsContext } from "../../../views/Results/context/results.context"
 
 const ResultListingHeader: React.FC = () => {
   const { keyword, paginatedResults, results, getCurrentPage, incrementPage, decrementPage, getTotalPages} = useContext(ResultsContext)
