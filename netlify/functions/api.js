@@ -85,7 +85,7 @@ var corsOptions = {
 };
 
 // changed from app.use('/api/graphql)
-router.get(
+router.use(
   '/graphql',
   cors(corsOptions),
   graphqlHTTP({
