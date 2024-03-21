@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const express = require('express');
+const serverless = require('serverless-http');
 const cors = require('cors');
 const { graphqlHTTP } = require('express-graphql');
 const { format, isBefore, isAfter, subDays } = require('date-fns');
@@ -258,3 +259,5 @@ const fetchData = async (keyword = null) => {
 };
 
 app.listen(3001);
+
+export const handler = serverless(app);
