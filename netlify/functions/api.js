@@ -174,7 +174,7 @@ var corsOptions = {
 };
 
 app.use(
-  '/graphql',
+  'api/graphql',
   cors(corsOptions),
   graphqlHTTP({
     schema: schema,
@@ -205,7 +205,7 @@ const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 
 }
 
 const fetchData = async (keyword = null) => {
-  const MAX_DAYS_OLD = 14;
+  const MAX_DAYS_OLD = 60;
   const RESULTS_PER_PAGE = 10;
   let data = {
     Search: [],
