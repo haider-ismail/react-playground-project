@@ -6,7 +6,7 @@ export const fetchResults = async (keyword: string = "") => {
     // const response = await axios.get(`http://localhost:3001/api/v1/movies/${keyword}`);
     // const response = await axios.get(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=${keyword}`);
 
-    const response = await fetch("http://localhost:3001/api/graphql", {
+    const response = await fetch("/api/graphql", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
