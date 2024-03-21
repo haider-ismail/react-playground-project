@@ -129,7 +129,7 @@ const movies = [
 app.get('/api/v1/jobs/:keyword', async (req, res) => {
   console.log('req.params', req.params);
   res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', 'https://workable-contracts.netlify.app');
   console.log('custom endpint');
   if (req.params.keyword) {
     const data = await fetchData(req.params.keyword);
