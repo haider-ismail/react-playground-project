@@ -1,7 +1,8 @@
 [functions]
-  external_node_modules = ["express"]
+  external_node_modules = ["express", "express-graphql"]
 [[redirects]]
   force = true
   from = "/api/*"
   status = 200
   to = "/.netlify/functions/api/:splat"
+  headers = {Access-Control-Allow-Origin = "*", Access-Control-Allow-Methods = "POST"}
