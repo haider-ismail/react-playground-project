@@ -1,3 +1,3 @@
-import ResultItemModalContent from './ResultItemModalContent'
+import ResultItemModalContent from "./ResultItemModalContent";
 
-export default ResultItemModalContent
+export default ResultItemModalContent;

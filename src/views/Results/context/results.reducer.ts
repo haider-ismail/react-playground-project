@@ -4,11 +4,11 @@ const reducer = (state: any, action: any) => {
       return {
         ...state,
         [action.key]: action.value
-      }
+      };
     }
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default reducer
+export default reducer;

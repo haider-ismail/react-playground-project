@@ -1,4 +1,4 @@
-import ResultListing from './ResultListing'
-import ResultListingPlaceholder from './ResultListingPlaceholder'
+import ResultListing from "./ResultListing";
+import ResultListingPlaceholder from "./ResultListingPlaceholder";
 
-export { ResultListing, ResultListingPlaceholder }
+export { ResultListing, ResultListingPlaceholder };

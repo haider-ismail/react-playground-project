@@ -1,10 +1,10 @@
 import React from "react";
 
 // Types
-import { IResultsProvider } from '../../../types/types';
+import { IResultsProvider } from "../../../types/types";
 
-const ResultsContext = React.createContext({} as IResultsProvider)
+const ResultsContext = React.createContext({} as IResultsProvider);
 
-const { Consumer, Provider } = ResultsContext
+const { Consumer, Provider } = ResultsContext;
 
-export { Provider, Consumer, ResultsContext }
+export { Provider, Consumer, ResultsContext };

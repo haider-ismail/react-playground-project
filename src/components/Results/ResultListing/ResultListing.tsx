@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
 // Helpers
-import { IMovie } from '../../../types/types';
+import { IMovie } from "../../../types/types";
 
 // Components
-import ResultItem from '../ResultItem';
+import ResultItem from "../ResultItem";
 interface IProps {
   resultItems: IMovie[];
   clickHandler: () => void;
@@ -21,7 +21,11 @@ const ResultListing: React.FC<IProps> = ({ resultItems, clickHandler }) => {
         aria-live="polite"
       >
         {resultItems.map((item: any, index: number) => (
-          <ResultItem clickHandler={() => {}} item={item} key={`${item.id}`} />
+          <ResultItem
+            clickHandler={handleClick}
+            item={item}
+            key={`${item.id}`}
+          />
         ))}
       </div>
     )

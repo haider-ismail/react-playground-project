@@ -1,20 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 
 // Helpers
-import { ResultsContext } from './context/results.context';
+import { ResultsContext } from "./context/results.context";
 
 // Components
-import ResultListingHeader from '../../components/Results/ResultListingHeader';
-import ResultListingPlaceholder from '../../components/Results/ResultListing/ResultListingPlaceholder';
-import {
-  ResultListing,
-  ResultItemModalContent,
-} from '../../components/Results';
+import ResultListingHeader from "../../components/Results/ResultListingHeader";
+import ResultListingPlaceholder from "../../components/Results/ResultListing/ResultListingPlaceholder";
+import { ResultListing } from "../../components/Results";
 // import Modal from '../../components/Modal'
 
-interface IProps {}
-
-const Results: React.FunctionComponent<IProps> = () => {
+const Results: React.FunctionComponent = () => {
   const {
     keyword,
     loading,
@@ -23,7 +18,7 @@ const Results: React.FunctionComponent<IProps> = () => {
     recommendedListing,
     paginatedResults,
     isResultModalOpen,
-    setModalOpenState,
+    setModalOpenState
   } = useContext(ResultsContext);
 
   return (
@@ -45,7 +40,8 @@ const Results: React.FunctionComponent<IProps> = () => {
 
         {keyword &&
           !loading &&
-          paginatedResults && paginatedResults.length === 0 && (
+          paginatedResults &&
+          paginatedResults.length === 0 && (
             <div className="results-listing__container bg-gray-800 px-6 py-8 mb-8 rounded-md text-white text-center">
               <h3 className="text-2xl mb-4">
                 No results matching "{keyword}" found

@@ -1,5 +1,10 @@
-import ResultListingHeader from './ResultListingHeader'
-import { ResultListing, ResultListingPlaceholder } from './ResultListing'
-import ResultItemModalContent from './ResultItemModalContent'
+import ResultListingHeader from "./ResultListingHeader";
+import { ResultListing, ResultListingPlaceholder } from "./ResultListing";
+import ResultItemModalContent from "./ResultItemModalContent";
 
-export  { ResultListingHeader, ResultListing, ResultListingPlaceholder, ResultItemModalContent }
+export {
+  ResultListingHeader,
+  ResultListing,
+  ResultListingPlaceholder,
+  ResultItemModalContent
+};

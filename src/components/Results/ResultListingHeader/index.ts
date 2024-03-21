@@ -1,3 +1,3 @@
-import ResultListingHeader from './ResultListingHeader'
+import ResultListingHeader from "./ResultListingHeader";
 
-export default ResultListingHeader
+export default ResultListingHeader;

@@ -1,3 +1,3 @@
-import { Consumer, Provider, ResultsContext } from "./context/results.context"
+import { Consumer, Provider, ResultsContext } from "./context/results.context";
 
-export { Consumer, Provider, ResultsContext }
+export { Consumer, Provider, ResultsContext };
