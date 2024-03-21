@@ -170,7 +170,8 @@ const schema = new GraphQLSchema({
 });
 
 var corsOptions = {
-  origin: 'https://workable-contracts.netlify.app',
+  // origin: 'https://workable-contracts.netlify.app',
+  origin: '*',
 };
 
 app.use(
