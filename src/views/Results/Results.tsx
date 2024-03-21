@@ -14,10 +14,8 @@ const Results: React.FunctionComponent = () => {
     keyword,
     loading,
     errorMessage,
-    selectedItem,
     recommendedListing,
     paginatedResults,
-    isResultModalOpen,
     setModalOpenState
   } = useContext(ResultsContext);
 

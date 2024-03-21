@@ -124,33 +124,33 @@ const ResultsProvider = ({ children }: any) => {
     }
   };
 
-  const getRecommended = async () => {
-    console.log("[getRecommended] -->");
-    dispatch({ type: "UPDATE_VALUE", key: "loading", value: true });
+  // const getRecommended = async () => {
+  //   console.log("[getRecommended] -->");
+  //   dispatch({ type: "UPDATE_VALUE", key: "loading", value: true });
 
-    try {
-      const response = await fetchResults("christmas");
+  //   try {
+  //     const response = await fetchResults("christmas");
 
-      if (_get(response, "data.jobs", null)) {
-        dispatch({
-          type: "UPDATE_VALUE",
-          key: "recommendedListing",
-          value: _get(response, "data.jobs", [])
-        });
-      } else {
-        dispatch({
-          type: "UPDATE_VALUE",
-          key: "recommendedListing",
-          value: []
-        });
-      }
+  //     if (_get(response, "data.jobs", null)) {
+  //       dispatch({
+  //         type: "UPDATE_VALUE",
+  //         key: "recommendedListing",
+  //         value: _get(response, "data.jobs", [])
+  //       });
+  //     } else {
+  //       dispatch({
+  //         type: "UPDATE_VALUE",
+  //         key: "recommendedListing",
+  //         value: []
+  //       });
+  //     }
 
-      dispatch({ type: "UPDATE_VALUE", key: "loading", value: false });
-    } catch (e) {
-      dispatch({ type: "UPDATE_VALUE", key: "recommendedListing", value: [] });
-      dispatch({ type: "UPDATE_VALUE", key: "loading", value: false });
-    }
-  };
+  //     dispatch({ type: "UPDATE_VALUE", key: "loading", value: false });
+  //   } catch (e) {
+  //     dispatch({ type: "UPDATE_VALUE", key: "recommendedListing", value: [] });
+  //     dispatch({ type: "UPDATE_VALUE", key: "loading", value: false });
+  //   }
+  // };
 
   const getFullDetails = async (id: string) => {
     if (!id) {
