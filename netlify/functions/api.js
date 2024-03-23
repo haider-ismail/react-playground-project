@@ -80,15 +80,14 @@ const schema = new GraphQLSchema({
   query: RootQueryType,
 });
 
-// var corsOptions = {
-//   // origin: 'https://workable-contracts.netlify.app',
-//   origin: '*',
-// };
+var corsOptions = {
+  origin: 'https://jobs.workable.com',
+};
 
 // changed from app.use('/api/graphql)
 router.use(
   '/graphql',
-  // cors(corsOptions),
+  cors(corsOptions),
   createHandler({ schema,  rootValue: RootQueryType })
 );
 
@@ -97,20 +96,20 @@ const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 
 
   return new Promise((resolve) => {
     setTimeout(async() => {
-      //TODO: uncomment
-      // const response = await fetch(
-      //   `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&offset=${index +
-      //     1}0`,
-      //   {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   }
-      // )
+      //TODO: THIS IS CAUSING CORS ERROR. ADD PROXY?
+      const response = await fetch(
+        `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&offset=${index +
+          1}0`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
 
-      // const data = await response.json();
-      console.log('keyword:', keyword,', index:', index);
-      const data = [];
+      const data = await response.json();
+      // console.log('keyword:', keyword,', index:', index);
+      // const data = [];
       resolve(data);
     }, waitTime);
   })
