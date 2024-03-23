@@ -13,6 +13,7 @@ const ResultItemCard: React.FC<IProps> = ({ item, clickHandler }) => {
   const { updateSelectedItem } = useContext(ResultsContext);
 
   const handleClick = () => {
+    // @ts-ignore
     updateSelectedItem(item);
     clickHandler();
   };

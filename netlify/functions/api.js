@@ -1,10 +1,11 @@
-const fetch = require('node-fetch');
-const express = require('express');
-const { Router } = require('express');
-const serverless = require('serverless-http');
-const cors = require('cors');
-const { graphqlHTTP } = require('express-graphql');
-const { format, isBefore, isAfter, subDays } = require('date-fns');
+/* eslint-disable no-unused-vars */
+
+import fetch from 'node-fetch';
+import express, { Router } from 'express';
+import serverless  from 'serverless-http';
+import cors from 'cors';
+import { createHandler } from 'graphql-http/lib/use/express';
+import { format, isBefore, isAfter, subDays } from 'date-fns';
 const { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLNonNull } = require('graphql');
 require('dotenv').config();
 
@@ -88,11 +89,7 @@ const schema = new GraphQLSchema({
 router.use(
   '/graphql',
   // cors(corsOptions),
-  graphqlHTTP({
-    schema: schema,
-    rootValue: RootQueryType,
-    graphiql: true,
-  })
+  createHandler({ schema,  rootValue: RootQueryType })
 );
 
 const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 0) => {
@@ -100,17 +97,20 @@ const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 
 
   return new Promise((resolve) => {
     setTimeout(async() => {
-      const response = await fetch(
-        `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&offset=${index +
-          1}0`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
+      //TODO: uncomment
+      // const response = await fetch(
+      //   `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&offset=${index +
+      //     1}0`,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   }
+      // )
 
-      const data = await response.json();
+      // const data = await response.json();
+      console.log('keyword:', keyword,', index:', index);
+      const data = [];
       resolve(data);
     }, waitTime);
   })
@@ -170,8 +170,10 @@ const fetchData = async (keyword = null) => {
   return data.Search;
 };
 
-// app.listen(3001);
+
+// if (process.env.NODE_ENV === "development") {
+//   app.listen(3001);
+// }
 
 app.use("/api/", router);
-
 export const handler = serverless(app);
