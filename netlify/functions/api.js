@@ -79,15 +79,15 @@ const schema = new GraphQLSchema({
   query: RootQueryType,
 });
 
-var corsOptions = {
-  // origin: 'https://workable-contracts.netlify.app',
-  origin: '*',
-};
+// var corsOptions = {
+//   // origin: 'https://workable-contracts.netlify.app',
+//   origin: '*',
+// };
 
 // changed from app.use('/api/graphql)
 router.use(
   '/graphql',
-  cors(corsOptions),
+  // cors(corsOptions),
   graphqlHTTP({
     schema: schema,
     rootValue: RootQueryType,

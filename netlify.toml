@@ -5,4 +5,4 @@
   from = "/api/*"
   status = 200
   to = "/.netlify/functions/api/:splat"
-  headers = {Access-Control-Allow-Origin = "*", Access-Control-Allow-Methods = "POST"}
+  headers = { X-From = "Netlify", Access-Control-Allow-Origin = "*", Access-Control-Allow-Methods = "POST" }
