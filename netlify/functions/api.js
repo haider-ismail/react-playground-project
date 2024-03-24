@@ -133,53 +133,60 @@ const fetchData = async (keyword = null) => {
     totalItems: 0
   };
   let exponentialTimeoutIndex = 0
+  let initialReq
 
-  const initialReq = await makeApiCallWithBackoff(keyword, 0, exponentialTimeoutIndex)
-  if (initialReq?.totalSize) {
-    data.totalItems = initialReq?.totalSize
-
-    const totalPages = data?.totalItems / RESULTS_PER_PAGE
-
-    console.log('totalPages:', totalPages);
-
-    // Loop over certain number of pages to get more results than the API allows at any one time
-    for (let index = 0; index <= totalPages; index++) {
-      exponentialTimeoutIndex = exponentialTimeoutIndex >= 50 ? 0 : exponentialTimeoutIndex
-      exponentialTimeoutIndex++
-
-      try {
-      
-        // console.log('for: index:', index, 'totalItems:', data.totalItems);
-        const workableResponse = await makeApiCallWithBackoff(keyword, index, exponentialTimeoutIndex)
-
-        if (workableResponse?.error === 'rate_limit') break;
-        if (workableResponse?.error === 'rate_limit') console.error('workable ERROR:', workableResponse?.error)
-
-        if (workableResponse?.jobs) data.Search = [...data.Search, ...workableResponse.jobs];
-        // if (!data?.totalItems) data.totalItems = workableResponse?.totalSize
-
-        if (index + 1 > data?.totalItems || data?.totalItems === 0) break;
-      } catch (error) {
-        data['error'] = error
+  try {
+    initialReq = await makeApiCallWithBackoff(keyword, 0, exponentialTimeoutIndex)
+  
+    if (initialReq?.totalSize) {
+      data.totalItems = initialReq?.totalSize
+  
+      const totalPages = data?.totalItems / RESULTS_PER_PAGE
+  
+      console.log('totalPages:', totalPages);
+  
+      // Loop over certain number of pages to get more results than the API allows at any one time
+      for (let index = 0; index <= totalPages; index++) {
+        exponentialTimeoutIndex = exponentialTimeoutIndex >= 50 ? 0 : exponentialTimeoutIndex
+        exponentialTimeoutIndex++
+  
+        try {
+        
+          // console.log('for: index:', index, 'totalItems:', data.totalItems);
+          const workableResponse = await makeApiCallWithBackoff(keyword, index, exponentialTimeoutIndex)
+  
+          if (workableResponse?.error === 'rate_limit') break;
+          if (workableResponse?.error === 'rate_limit') console.error('workable ERROR:', workableResponse?.error)
+  
+          if (workableResponse?.jobs) data.Search = [...data.Search, ...workableResponse.jobs];
+          // if (!data?.totalItems) data.totalItems = workableResponse?.totalSize
+  
+          if (index + 1 > data?.totalItems || data?.totalItems === 0) break;
+        } catch (error) {
+          data['error'] = error
+        }
       }
-    }
-  } 
+    } 
+  
+    // // console.log('data.Search:', data.Search);
+    // data.Search = data.Search.filter(
+    //   (_) => (_.employmentType === 'Contract' || _.description.includes('contract') || _.description.includes('freelance')) && isAfter(new Date(_.updated), subDays(new Date(), MAX_DAYS_OLD))
+    // ).sort((a, b) => {
+    //   if (isBefore(new Date(a.updated), new Date(b.updated))) {
+    //     return 1;
+    //   }
+    //   if (isAfter(new Date(a.updated), new Date(b.updated))) {
+    //     return -1;
+    //   }
+    //   // a must be equal to b
+    //   return 0;
+    // });
 
-  // // console.log('data.Search:', data.Search);
-  // data.Search = data.Search.filter(
-  //   (_) => (_.employmentType === 'Contract' || _.description.includes('contract') || _.description.includes('freelance')) && isAfter(new Date(_.updated), subDays(new Date(), MAX_DAYS_OLD))
-  // ).sort((a, b) => {
-  //   if (isBefore(new Date(a.updated), new Date(b.updated))) {
-  //     return 1;
-  //   }
-  //   if (isAfter(new Date(a.updated), new Date(b.updated))) {
-  //     return -1;
-  //   }
-  //   // a must be equal to b
-  //   return 0;
-  // });
-
-  data.Search = initialReq?.jobs
+    data.Search = initialReq?.jobs
+  
+  } catch (error) {
+    data['error'] = error
+  }
 
   return JSON.stringify(data)
 };
