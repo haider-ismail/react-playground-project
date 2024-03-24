@@ -7,7 +7,7 @@ import serverless  from 'serverless-http';
 import { createHandler } from 'graphql-http/lib/use/express';
 import { format, isBefore, isAfter, subDays } from 'date-fns';
 import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLNonNull } from 'graphql';
-// require('dotenv').config();
+require('dotenv').config();
 
 const app = express();
 const router = Router();
@@ -184,9 +184,9 @@ const fetchData = async (keyword = null) => {
 };
 
 
-// if (process.env.NODE_ENV === "development") {
-//   app.listen(3001);
-// }
+if (process.env.NODE_ENV === "development") {
+  app.listen(3001);
+}
 
 app.use("/api/", router);
 export const handler = serverless(app);

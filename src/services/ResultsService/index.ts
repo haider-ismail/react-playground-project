@@ -20,11 +20,8 @@ export const fetchResults = async (keyword: string = "") => {
       // `
       // })
     })
-      // .then(r => {
-      //   console.log('r:', r);
-      //   return r.json() 
-      // })
-      // .then(data => data);
+      .then(r => r.json())
+      .then(data => data);
 
     //   axios.post('http://localhost:3001/graphql', {
     //   headers: {
@@ -38,7 +35,7 @@ export const fetchResults = async (keyword: string = "") => {
     //   `})
     // })
 
-    console.log("fetchResults: res:", response);
+    console.log("fetchResults: res:", JSON.parse(response));
 
     return response;
   } catch (e) {
