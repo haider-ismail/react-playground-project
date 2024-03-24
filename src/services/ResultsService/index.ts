@@ -20,8 +20,11 @@ export const fetchResults = async (keyword: string = "") => {
       // `
       // })
     })
-      .then(r => r.json())
-      .then(data => data);
+      // .then(r => {
+      //   console.log('r:', r);
+      //   return r.json() 
+      // })
+      // .then(data => data);
 
     //   axios.post('http://localhost:3001/graphql', {
     //   headers: {
