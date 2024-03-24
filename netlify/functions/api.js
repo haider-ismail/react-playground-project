@@ -4,7 +4,7 @@ import fetch from 'node-fetch';
 import express, { Router } from 'express';
 import serverless  from 'serverless-http';
 // import cors from 'cors';
-import { createHandler } from 'graphql-http/lib/use/@netlify/functions';
+import { createHandler } from 'graphql-http/lib/use/express';
 import { format, isBefore, isAfter, subDays } from 'date-fns';
 import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLNonNull } from 'graphql';
 // require('dotenv').config();
