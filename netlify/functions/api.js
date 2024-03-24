@@ -3,11 +3,11 @@
 import fetch from 'node-fetch';
 import express, { Router } from 'express';
 import serverless  from 'serverless-http';
-import cors from 'cors';
+// import cors from 'cors';
 import { createHandler } from 'graphql-http/lib/use/express';
 import { format, isBefore, isAfter, subDays } from 'date-fns';
-const { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLNonNull } = require('graphql');
-require('dotenv').config();
+import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLNonNull } from 'graphql';
+// require('dotenv').config();
 
 const app = express();
 const router = Router();
