@@ -80,14 +80,14 @@ const schema = new GraphQLSchema({
   query: RootQueryType,
 });
 
-var corsOptions = {
-  origin: 'https://jobs.workable.com',
-};
+// var corsOptions = {
+//   origin: 'https://jobs.workable.com',
+// };
 
 // changed from app.use('/api/graphql)
 router.use(
   '/graphql',
-  cors(corsOptions),
+  // cors(corsOptions),
   createHandler({ schema,  rootValue: RootQueryType })
 );
 
