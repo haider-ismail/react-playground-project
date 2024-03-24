@@ -110,6 +110,7 @@ const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 
         `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&offset=${index +
           1}0`,
         {
+          method: "GET",
           headers: {
             'Content-Type': 'application/json',
           },
@@ -138,35 +139,35 @@ const fetchData = async (keyword = null) => {
   try {
     initialReq = await makeApiCallWithBackoff(keyword, 0, exponentialTimeoutIndex)
   
-    if (initialReq?.totalSize) {
-      data.totalItems = initialReq?.totalSize
+    // if (initialReq?.totalSize) {
+    //   data.totalItems = initialReq?.totalSize
   
-      const totalPages = data?.totalItems / RESULTS_PER_PAGE
+    //   const totalPages = data?.totalItems / RESULTS_PER_PAGE
   
-      console.log('totalPages:', totalPages);
+    //   console.log('totalPages:', totalPages);
   
-      // Loop over certain number of pages to get more results than the API allows at any one time
-      for (let index = 0; index <= totalPages; index++) {
-        exponentialTimeoutIndex = exponentialTimeoutIndex >= 50 ? 0 : exponentialTimeoutIndex
-        exponentialTimeoutIndex++
+    //   // Loop over certain number of pages to get more results than the API allows at any one time
+    //   for (let index = 0; index <= totalPages; index++) {
+    //     exponentialTimeoutIndex = exponentialTimeoutIndex >= 50 ? 0 : exponentialTimeoutIndex
+    //     exponentialTimeoutIndex++
   
-        try {
+    //     try {
         
-          // console.log('for: index:', index, 'totalItems:', data.totalItems);
-          const workableResponse = await makeApiCallWithBackoff(keyword, index, exponentialTimeoutIndex)
+    //       // console.log('for: index:', index, 'totalItems:', data.totalItems);
+    //       const workableResponse = await makeApiCallWithBackoff(keyword, index, exponentialTimeoutIndex)
   
-          if (workableResponse?.error === 'rate_limit') break;
-          if (workableResponse?.error === 'rate_limit') console.error('workable ERROR:', workableResponse?.error)
+    //       if (workableResponse?.error === 'rate_limit') break;
+    //       if (workableResponse?.error === 'rate_limit') console.error('workable ERROR:', workableResponse?.error)
   
-          if (workableResponse?.jobs) data.Search = [...data.Search, ...workableResponse.jobs];
-          // if (!data?.totalItems) data.totalItems = workableResponse?.totalSize
+    //       if (workableResponse?.jobs) data.Search = [...data.Search, ...workableResponse.jobs];
+    //       // if (!data?.totalItems) data.totalItems = workableResponse?.totalSize
   
-          if (index + 1 > data?.totalItems || data?.totalItems === 0) break;
-        } catch (error) {
-          data['error'] = error
-        }
-      }
-    } 
+    //       if (index + 1 > data?.totalItems || data?.totalItems === 0) break;
+    //     } catch (error) {
+    //       data['error'] = error
+    //     }
+    //   }
+    // } 
   
     // // console.log('data.Search:', data.Search);
     // data.Search = data.Search.filter(
