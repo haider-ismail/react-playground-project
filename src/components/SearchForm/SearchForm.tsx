@@ -37,6 +37,8 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
   // Utilising useEffect hook and timeout to only trigger search when user stops typing
   useEffect(() => {
     const typingTimeoutId = setTimeout(() => {
+      console.log('firstUpdate.current:', firstUpdate.current);
+      
       // Skip for first render
       if (firstUpdate.current) {
         if (keyword) {
@@ -44,6 +46,9 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
         }
         return (firstUpdate.current = false);
       }
+
+      console.log('localKeyword:', localKeyword, 'keyword:', keyword);
+      
 
       if (localKeyword !== keyword) {
         setKeyword(localKeyword as string);
@@ -71,6 +76,8 @@ const SearchForm: React.FC<IProps> = ({ submitHandler, cssClasses }) => {
         type="search"
         className="md:w-80 border-white border-2 p-4"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          console.log('input changeEvent e.target.value:', e.target.value);
+          
           setLocalKeyword(e.target.value);
         }}
         id="keyword"
