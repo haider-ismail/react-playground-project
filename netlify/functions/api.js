@@ -85,13 +85,13 @@ const schema = new GraphQLSchema({
 // };
 
 // changed from app.use('/api/graphql)
-router.use(
-  '/graphql',
-  // cors(corsOptions),
-  createHandler({ schema })
-);
+// router.get(
+//   '/graphql',
+//   // cors(corsOptions),
+//   createHandler({ schema })
+// );
 
-// router.get("/hello", (req, res) => res.send("Hello World!"));
+router.get("/hello", (req, res) => res.send("Hello World!"));
 
 const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 0) => {
   const waitTime = exponentialTimeoutIndex * 25; 
