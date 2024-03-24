@@ -106,7 +106,6 @@ const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 
 
   return new Promise((resolve) => {
     setTimeout(async() => {
-      //TODO: THIS IS CAUSING CORS ERROR. ADD PROXY?
       const response = await fetch(
         `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&offset=${index +
           1}0`,
@@ -166,19 +165,27 @@ const fetchData = async (keyword = null) => {
     }
   } 
 
-  // console.log('data.Search:', data.Search);
-  data.Search = data.Search.filter(
-    (_) => (_.employmentType === 'Contract' || _.description.includes('contract') || _.description.includes('freelance')) && isAfter(new Date(_.updated), subDays(new Date(), MAX_DAYS_OLD))
-  ).sort((a, b) => {
-    if (isBefore(new Date(a.updated), new Date(b.updated))) {
-      return 1;
-    }
-    if (isAfter(new Date(a.updated), new Date(b.updated))) {
-      return -1;
-    }
-    // a must be equal to b
-    return 0;
-  });
+  // // console.log('data.Search:', data.Search);
+  // data.Search = data.Search.filter(
+  //   (_) => (_.employmentType === 'Contract' || _.description.includes('contract') || _.description.includes('freelance')) && isAfter(new Date(_.updated), subDays(new Date(), MAX_DAYS_OLD))
+  // ).sort((a, b) => {
+  //   if (isBefore(new Date(a.updated), new Date(b.updated))) {
+  //     return 1;
+  //   }
+  //   if (isAfter(new Date(a.updated), new Date(b.updated))) {
+  //     return -1;
+  //   }
+  //   // a must be equal to b
+  //   return 0;
+  // });
+
+  data.Search = [{
+    Title: 'Haider',
+    Year: '2014',
+    imdbID: 'tt3390572',
+    Type: 'movie',
+    Poster: 'https://m.media-amazon.com/images/M/MV5BMjA1NTEwMDMxMF5BMl5BanBnXkFtZTgwODkzMzI0MjE@._V1_SX300.jpg',
+  }]
 
   return JSON.stringify(data)
 };
