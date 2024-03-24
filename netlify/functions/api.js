@@ -88,7 +88,7 @@ const schema = new GraphQLSchema({
 router.use(
   '/graphql',
   // cors(corsOptions),
-  createHandler({ schema,  rootValue: RootQueryType })
+  createHandler({ schema })
 );
 
 // router.get("/hello", (req, res) => res.send("Hello World!"));
