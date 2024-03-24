@@ -1,5 +1,6 @@
 [functions]
   external_node_modules = ["express", "graphql-http"]
+  node_bundler = "esbuild"
 [[redirects]]
   force = true
   from = "/api/*"

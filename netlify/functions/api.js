@@ -142,7 +142,7 @@ const fetchData = async (keyword = null) => {
 
       try {
       
-        console.log('for: index:', index, 'totalItems:', data.totalItems);
+        // console.log('for: index:', index, 'totalItems:', data.totalItems);
         const workableResponse = await makeApiCallWithBackoff(keyword, index, exponentialTimeoutIndex)
 
         if (workableResponse?.error === 'rate_limit') break;
@@ -152,7 +152,9 @@ const fetchData = async (keyword = null) => {
         // if (!data?.totalItems) data.totalItems = workableResponse?.totalSize
 
         if (index + 1 > data?.totalItems || data?.totalItems === 0) break;
-      } catch (error) {}
+      } catch (error) {
+        // data['error'] = error
+      }
     }
   } 
 
