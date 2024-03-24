@@ -3,7 +3,6 @@
   "author": "Haider Ismail",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "dependencies": {
     "@netlify/functions": "^2.6.0",
     "@types/classnames": "^2.2.9",
