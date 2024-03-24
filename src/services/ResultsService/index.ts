@@ -39,7 +39,7 @@ export const fetchResults = async (keyword: string = "") => {
 
     return response;
   } catch (e) {
-    console.error(e);
+    console.log('[fetchResults] --> catch:', e);
   }
 };
 
