@@ -179,13 +179,7 @@ const fetchData = async (keyword = null) => {
   //   return 0;
   // });
 
-  data.Search = [{
-    Title: 'Haider',
-    Year: '2014',
-    imdbID: 'tt3390572',
-    Type: 'movie',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BMjA1NTEwMDMxMF5BMl5BanBnXkFtZTgwODkzMzI0MjE@._V1_SX300.jpg',
-  }]
+  data.Search = initialReq?.jobs
 
   return JSON.stringify(data)
 };
