@@ -85,10 +85,18 @@ const schema = new GraphQLSchema({
 // };
 
 // changed from app.use('/api/graphql)
-router.post(
+// router.post(
+//   '/graphql',
+//   // cors(corsOptions),
+//   createHandler({ schema })
+// );
+
+router.get(
   '/graphql',
-  // cors(corsOptions),
-  createHandler({ schema })
+  async (req, res) => {
+    const data = await fetchData(req._construct.params.keyword)
+    return res.json(data);
+  }
 );
 
 router.post("/hello", (req, res) => res.send("Hello World!"));
@@ -153,7 +161,7 @@ const fetchData = async (keyword = null) => {
 
         if (index + 1 > data?.totalItems || data?.totalItems === 0) break;
       } catch (error) {
-        // data['error'] = error
+        data['error'] = error
       }
     }
   } 
@@ -171,7 +179,8 @@ const fetchData = async (keyword = null) => {
     // a must be equal to b
     return 0;
   });
-  return data.Search;
+
+  return JSON.stringify(data)
 };
 
 

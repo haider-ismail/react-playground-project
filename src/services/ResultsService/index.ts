@@ -6,19 +6,19 @@ export const fetchResults = async (keyword: string = "") => {
     // const response = await axios.get(`http://localhost:3001/api/v1/movies/${keyword}`);
     // const response = await axios.get(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=${keyword}`);
 
-    const response = await fetch("/api/graphql", {
-      method: "POST",
+    const response = await fetch(`/api/graphql?keyword=${keyword}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
       },
-      body: JSON.stringify({
-        query: `
-        { 
-          jobs(Keyword: "${keyword}") { id, title, url, description, website, updated, image } 
-        }
-      `
-      })
+      // body: JSON.stringify({
+      //   query: `
+      //   { 
+      //     jobs(Keyword: "${keyword}") { id, title, url, description, website, updated, image } 
+      //   }
+      // `
+      // })
     })
       .then(r => r.json())
       .then(data => data);
