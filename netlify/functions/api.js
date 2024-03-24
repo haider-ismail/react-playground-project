@@ -94,7 +94,7 @@ const schema = new GraphQLSchema({
 router.get(
   '/graphql',
   async (req, res) => {
-    const data = await fetchData(req._construct.params.keyword)
+    const data = await fetchData(req.params.keyword)
     return res.json(data);
   }
 );
