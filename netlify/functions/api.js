@@ -91,7 +91,7 @@ router.use(
   createHandler({ schema,  rootValue: RootQueryType })
 );
 
-router.get("/hello", (req, res) => res.send("Hello World!"));
+// router.get("/hello", (req, res) => res.send("Hello World!"));
 
 const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 0) => {
   const waitTime = exponentialTimeoutIndex * 25; 
