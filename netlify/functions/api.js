@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch';
 import express, { Router } from 'express';
 import serverless  from 'serverless-http';
 // import cors from 'cors';
@@ -8,7 +8,6 @@ import serverless  from 'serverless-http';
 import { format, isBefore, isAfter, subDays } from 'date-fns';
 // import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLNonNull } from 'graphql';
 // require('dotenv').config();
-
 const app = express();
 const router = Router();
 
@@ -106,25 +105,26 @@ const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 
 
   return new Promise((resolve) => {
     setTimeout(async() => {
-      const data = await fetch(
-        `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&offset=${index +
-          1}0`,
-        {
-          method: "GET",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-      .then((res) => res.json())
-      .catch((err) => {
+      // const data = await fetch(
+      //   `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&offset=${index +
+      //     1}0`,
+      //   {
+      //     method: "GET",
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   }
+      // )
+      // .then((res) => res.json())
+      // .catch((err) => {
 
-      })
+      // })
 
       // const data = await response.json();
 
       // console.log('keyword:', keyword,', index:', index);
-      // const data = [];
+      
+      const data = [];
       resolve(data);
     }, waitTime);
   })
