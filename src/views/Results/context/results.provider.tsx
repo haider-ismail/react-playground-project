@@ -98,9 +98,6 @@ const ResultsProvider = ({ children }: any) => {
 
       console.log('resultsprovider response:', response);
 
-      
-      
-
       if (_get(response, "data.jobs").length) {
         dispatch({
           type: "UPDATE_VALUE",

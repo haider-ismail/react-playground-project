@@ -106,7 +106,7 @@ const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 
 
   return new Promise((resolve) => {
     setTimeout(async() => {
-      const response = await fetch(
+      const data = await fetch(
         `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&offset=${index +
           1}0`,
         {
@@ -116,8 +116,12 @@ const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 
           },
         }
       )
+      .then((res) => res.json())
+      .catch((err) => {
 
-      const data = await response.json();
+      })
+
+      // const data = await response.json();
 
       // console.log('keyword:', keyword,', index:', index);
       // const data = [];
@@ -155,10 +159,10 @@ const fetchData = async (keyword = null) => {
         
           // console.log('for: index:', index, 'totalItems:', data.totalItems);
           const workableResponse = await makeApiCallWithBackoff(keyword, index, exponentialTimeoutIndex)
-  
+          if (workableResponse?.error) data['error'] = workableResponse?.error;
           if (workableResponse?.error === 'rate_limit') break;
           if (workableResponse?.error === 'rate_limit') console.error('workable ERROR:', workableResponse?.error)
-  
+          
           if (workableResponse?.jobs) data.Search = [...data.Search, ...workableResponse.jobs];
           // if (!data?.totalItems) data.totalItems = workableResponse?.totalSize
   
