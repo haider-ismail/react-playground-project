@@ -115,7 +115,7 @@ const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 
           },
         }
       )
-      .then((res) => res.json())
+      .then((res) => res)
       .catch((err) => {
         console.log("err:", err);
       });
