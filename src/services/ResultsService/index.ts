@@ -35,7 +35,7 @@ export const fetchResults = async (keyword: string = "") => {
     //   `})
     // })
 
-    console.log("fetchResults: res:", JSON.parse(response));
+    console.log("fetchResults: res:", response);
 
     return response;
   } catch (e) {
