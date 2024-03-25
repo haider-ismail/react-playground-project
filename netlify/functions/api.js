@@ -95,7 +95,7 @@ router.get(
   '/graphql',
   async (req, res) => {
     const data = await fetchData(req.params.keyword)
-    return data.json(data);
+    return res.end(JSON.stringify(data));
   }
 );
 
@@ -208,7 +208,7 @@ const fetchData = async (keyword = null) => {
     data['error'] = error
   }
 
-  return JSON.stringify(data)
+  return data
 };
 
 
