@@ -96,6 +96,11 @@ const ResultsProvider = ({ children }: any) => {
     try {
       const response = await fetchResults(keyword);
 
+      console.log('resultsprovider response:', response);
+
+      
+      
+
       if (_get(response, "data.jobs").length) {
         dispatch({
           type: "UPDATE_VALUE",
