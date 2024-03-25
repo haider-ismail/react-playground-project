@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 // import fetch from 'node-fetch';
+import axios from "axios";
 import express, { Router } from 'express';
 import serverless  from 'serverless-http';
 // import cors from 'cors';
@@ -105,6 +106,22 @@ const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 
 
   return new Promise((resolve) => {
     setTimeout(async() => {
+      const data = await axios.get(
+        `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&offset=${index + 1}0`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            // "Access-Control-Allow-Origin": "https://jobs.workable.com",
+          },
+        }
+      )
+      .then((res) => res.json())
+      .catch((err) => {
+        console.log("err:", err);
+      });
+      
       // const data = await fetch(
       //   `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&offset=${index +
       //     1}0`,
@@ -123,8 +140,8 @@ const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 
       // const data = await response.json();
 
       // console.log('keyword:', keyword,', index:', index);
-      
-      const data = [];
+
+      // const data = [];
       resolve(data);
     }, waitTime);
   })
