@@ -104,7 +104,7 @@ const makeApiCallWithBackoff = async (keyword, index, exponentialTimeoutIndex = 
 
   return new Promise((resolve) => {
     setTimeout(async() => {
-      const data = await axios.get(
+      const data = await axios(
         `https://jobs.workable.com/api/v1/jobs?query=${keyword}&location=united%20kingdom&offset=${index + 1}0`,
         {
           method: "GET",
